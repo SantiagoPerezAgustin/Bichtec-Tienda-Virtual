@@ -129,7 +129,7 @@ Option 1 (recommended):
 Open your terminal
 
 Run:
-git clone https://github.com/emi-pereyra17/TP-Final-BICTECH.git
+git clone https://github.com/emi-pereyra17/BICTECH-Tienda-Virtual.git
 
 Option 2:
 
