@@ -154,10 +154,3 @@ Run the frontend (npm run dev)
 Make sure the VITE_API_URL in .env matches your backend port (default: 5000)
 
 Enjoy exploring the BICTECH store! 🎉
-
-👥 TEAM
-
-Developed by:
-Máximo Jara
-Emiliano Pereyra
-Santiago Pérez
