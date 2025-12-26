@@ -1,7 +1,24 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Emi\\Desktop\\BICTECH FINAL VERSION\\BicTechBack\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\presentation.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\presentation.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Bookmark",
@@ -21,7 +38,88 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:3:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:4:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:605150511:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:597345585:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:0:0:{0174dea2-fdbe-4ef1-8f99-c0beae78880f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Program.cs",
+              "RelativeDocumentMoniker": "src\\Presentation\\Program.cs",
+              "ToolTip": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Program.cs",
+              "RelativeToolTip": "src\\Presentation\\Program.cs",
+              "ViewState": "AgIAALkAAAAAAAAAAAAcwMoAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T19:41:09.913Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "src\\Presentation\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Properties\\launchSettings.json",
+              "RelativeToolTip": "src\\Presentation\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-19T19:37:37.56Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\Presentation\\appsettings.json",
+              "ToolTip": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\appsettings.json",
+              "RelativeToolTip": "src\\Presentation\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-19T19:08:59.479Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Presentation.csproj",
+              "DocumentMoniker": "C:\\Users\\santi\\Source\\Repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
+              "RelativeDocumentMoniker": "src\\Presentation\\Presentation.csproj",
+              "ToolTip": "C:\\Users\\santi\\Source\\Repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
+              "RelativeToolTip": "src\\Presentation\\Presentation.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-19T19:08:54.896Z"
             }
           ]
         }
