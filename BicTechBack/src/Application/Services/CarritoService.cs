@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.DTOs;
+using AutoMapper;
 using BicTechBack.src.Core.DTOs;
 using BicTechBack.src.Core.Entities;
 using BicTechBack.src.Core.Interfaces;
@@ -203,6 +204,30 @@ namespace BicTechBack.src.Core.Services
 
             _logger.LogInformation("Cantidad del producto {ProductoId} actualizada correctamente en el carrito del usuario {UsuarioId}", productoId, usuarioId);
             return _mapper.Map<CarritoDTO>(carritoActualizado);
+        }
+
+        public async Task<CarritoWhatsappResumenDTO> GetResumenWhatsappAsync(int usuarioId)
+        {
+            var carrito = await _repository.GetByUsuarioIdAsync(usuarioId);
+
+            if (carrito == null || !carrito.CarritosDetalles.Any())
+                throw new Exception("El carrito está vacío");
+
+            var resumen = new CarritoWhatsappResumenDTO
+            {
+                UsuarioNombre = carrito.Usuario.Nombre,
+                UsuarioEmail = carrito.Usuario.Email,
+                Items = carrito.CarritosDetalles.Select(d => new CarritoWhatsappItemDTO
+                {
+                    ProductoNombre = d.Producto.Nombre,
+                    Cantidad = d.Cantidad,
+                    PrecioUnitario = d.Producto.Precio
+                }).ToList()
+            };
+
+            resumen.Total = resumen.Items.Sum(i => i.Subtotal);
+
+            return resumen;
         }
     }
 }

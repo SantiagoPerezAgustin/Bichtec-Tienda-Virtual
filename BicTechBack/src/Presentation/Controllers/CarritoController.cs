@@ -4,6 +4,7 @@ using BicTechBack.src.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace BicTechBack.src.API.Controllers
 {
@@ -240,6 +241,17 @@ namespace BicTechBack.src.API.Controllers
                 _logger.LogWarning("Operación inválida al limpiar carrito. UsuarioId: {UsuarioId}, Error: {Error}", usuarioId, ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [Authorize]
+        [HttpGet("whatsapp-resumen")]
+        public async Task<IActionResult> GetResumenWhatsapp()
+        {
+            var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var resumen = await _carritoService.GetResumenWhatsappAsync(usuarioId);
+
+            return Ok(resumen);
         }
     }
 }

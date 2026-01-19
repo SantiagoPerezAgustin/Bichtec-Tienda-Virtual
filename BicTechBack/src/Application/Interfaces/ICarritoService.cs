@@ -1,4 +1,5 @@
-﻿using BicTechBack.src.Core.DTOs;
+﻿using Application.DTOs;
+using BicTechBack.src.Core.DTOs;
 
 namespace BicTechBack.src.Core.Interfaces
 {
@@ -11,6 +12,6 @@ namespace BicTechBack.src.Core.Interfaces
         Task<CarritoDTO> DeleteProductoFromCarritoAsync(int usuarioId, int productoId);
         Task<CarritoDTO> ClearCarritoAsync(int usuarioId);
         Task<(IEnumerable<CarritoDTO> Carritos, int Total)> GetCarritosAsync(int page, int pageSize, string? filtro);
-
+        Task<CarritoWhatsappResumenDTO> GetResumenWhatsappAsync(int usuarioId);
     }
 }
