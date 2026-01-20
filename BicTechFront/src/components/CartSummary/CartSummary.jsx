@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-const CartSummary = ({ items }) => {
+const CartSummary = ({ total, finalizarPorWhatsapp }) => {
   const { carrito, vaciarCarrito } = useContext(CarritoContext);
   const { usuario } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -60,11 +60,6 @@ const CartSummary = ({ items }) => {
     }
   };
 
-  const total = items.reduce((sum, item) => {
-    const precio = Number(item.producto?.precio ?? 0);
-    const cantidad = Number(item.cantidad ?? 0);
-    return sum + precio * cantidad;
-  }, 0);
 
   return (
     <div
@@ -76,23 +71,6 @@ const CartSummary = ({ items }) => {
           Resumen de compra
         </h4>
         <hr style={{ borderColor: "#d4af37" }} />
-        <div className="mb-3">
-          <label
-            htmlFor="direccionEnvio"
-            className="form-label"
-            style={{ color: "#d4af37" }}
-          >
-            Dirección de envío
-          </label>
-          <input
-            type="text"
-            id="direccionEnvio"
-            className="form-control"
-            value={direccionEnvio}
-            onChange={(e) => setDireccionEnvio(e.target.value)}
-            placeholder="Ingrese su dirección"
-          />
-        </div>
         <p className="fs-5">
           Total:{" "}
           <strong style={{ color: "#d4af37" }}>
@@ -100,15 +78,16 @@ const CartSummary = ({ items }) => {
           </strong>
         </p>
         <button
-          className="btn w-100 mt-3"
+          onClick={finalizarPorWhatsapp}
+          className="btn w-100 mt-3 d-flex align-items-center justify-content-center gap-2"
           style={{
-            backgroundColor: "#d4af37",
+            backgroundColor: "#25D366",
             color: "#000",
-            border: "none",
+            fontWeight: "bold",
           }}
-          onClick={handleFinalizarCompra}
         >
-          Finalizar compra
+          <i className="bi bi-whatsapp"></i>
+          Finalizar pedido por WhatsApp
         </button>
       </div>
     </div>

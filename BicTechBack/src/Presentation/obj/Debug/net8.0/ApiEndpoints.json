@@ -252,6 +252,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BicTechBack.src.API.Controllers.CarritoController",
+    "Method": "GetResumenWhatsapp",
+    "RelativePath": "carritos/whatsapp-resumen",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BicTechBack.src.API.Controllers.CategoriaMarcaController",
     "Method": "GetAll",
     "RelativePath": "categoriaMarca",

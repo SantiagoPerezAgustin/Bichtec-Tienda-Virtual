@@ -392,6 +392,18 @@
         }
       }
     },
+    "/carritos/whatsapp-resumen": {
+      "get": {
+        "tags": [
+          "Carrito"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/categorias": {
       "get": {
         "tags": [
