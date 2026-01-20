@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FiltroContext } from "../../context/FiltroContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL;
+
+fetch(`${API_URL}/categorias`);
 const SIDEBAR_WIDTH = 250;
 
 const SideBar = ({ children }) => {
@@ -20,7 +22,7 @@ const SideBar = ({ children }) => {
     fetch(`${API_URL}/categorias`)
       .then((res) => res.json())
       .then((data) =>
-        setCategorias(Array.isArray(data) ? data : data.categorias || [])
+        setCategorias(Array.isArray(data) ? data : data.categorias || []),
       );
   }, []);
 
