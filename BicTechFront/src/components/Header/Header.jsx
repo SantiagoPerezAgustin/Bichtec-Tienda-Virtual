@@ -30,7 +30,7 @@ function ColorSchemesExample() {
   console.log("ROL EN HEADER:", rol);
   return (
     <>
-      <nav className="navbar header-fixed navbar-expand-lg custom-navbar-bg">
+      <nav className="navbar navbar-dark header-fixed navbar-expand-lg custom-navbar-bg">
         <div className="container-fluid">
           <Link
             className="navbar-brand text-white me-3"
@@ -51,7 +51,7 @@ function ColorSchemesExample() {
             }}
           >
             BICHTEC
-          </Link>        
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -155,7 +155,8 @@ function ColorSchemesExample() {
                   {usuario.nombre}
                 </Link>
               )}
-              {((usuario && rol && rol.toLowerCase() === "user") || rol === null) && (
+              {((usuario && rol && rol.toLowerCase() === "user") ||
+                rol === null) && (
                 <Link
                   to="/carrito"
                   onClick={handleCarritoClick}

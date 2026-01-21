@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Presentation\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7D44CE21-3A18-4C08-9814-2DEED3EAC3B4}|src\\Application\\Application.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\application\\interfaces\\icarritoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,20 +23,20 @@
       "RelativeMoniker": "D:0:0:{7D44CE21-3A18-4C08-9814-2DEED3EAC3B4}|src\\Application\\Application.csproj|solutionrelative:src\\application\\dtos\\carritowhatsappitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\presentation\\presentation.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\presentation.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\presentation.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Controllers\\CarritoController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Presentation\\Controllers\\CarritoController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\controllers\\carritocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\controllers\\carritocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Properties\\launchSettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Presentation\\Properties\\launchSettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Presentation\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|c:\\users\\santi\\source\\repos\\bictech-tienda-virtual\\bictechback\\src\\presentation\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8A177184-3480-40F3-9E3D-9394DD6F4EAA}|src\\Presentation\\Presentation.csproj|solutionrelative:src\\presentation\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -193,9 +193,9 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "Presentation.csproj",
-              "DocumentMoniker": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
+              "DocumentMoniker": "C:\\Users\\santi\\Source\\Repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
               "RelativeDocumentMoniker": "src\\Presentation\\Presentation.csproj",
-              "ToolTip": "C:\\Users\\santi\\source\\repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
+              "ToolTip": "C:\\Users\\santi\\Source\\Repos\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
               "RelativeToolTip": "src\\Presentation\\Presentation.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
