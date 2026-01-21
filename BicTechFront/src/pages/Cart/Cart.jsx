@@ -23,16 +23,19 @@ const Cart = () => {
       return;
     }
 
-    let mensaje = `Hola!\n`;
-    mensaje += `Quería hacer el siguiente pedido:\n\n`;
+    let mensaje = `Hola! 👋\n`;
+    mensaje += `Soy cliente de *BichTec* y quería realizar el siguiente pedido:\n\n`;
 
     cartItems.forEach((item) => {
-      mensaje += `• ${item.producto.nombre} x${item.cantidad} - $${(
+      mensaje += `• ${item.producto.nombre}\n`;
+      mensaje += `  Cantidad: ${item.cantidad}\n`;
+      mensaje += `  Subtotal: $${(
         item.producto.precio * item.cantidad
-      ).toLocaleString("es-AR")}\n`;
+      ).toLocaleString("es-AR")}\n\n`;
     });
 
-    mensaje += `\nTotal: $${total.toLocaleString("es-AR")}`;
+    mensaje += `🧾 *Total del pedido:* $${total.toLocaleString("es-AR")}\n\n`;
+    mensaje += `Quedo atento/a para coordinar el pago y la entrega 😊\n\n`;
 
     const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
       mensaje,
@@ -58,21 +61,35 @@ const Cart = () => {
         className="container-fluid px-5"
         style={{ maxWidth: "1400px", margin: "0 auto" }}
       >
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <a
-            href="/productos"
-            className="btn btn-outline-light"
-            style={{ borderColor: "#d4af37", color: "#d4af37" }}
-          >
-            ← Volver a productos
-          </a>
-          <h1
-            className="text-center flex-grow-1 m-0"
-            style={{ color: "#d4af37" }}
-          >
-            🛒 Carrito de compras
-          </h1>
-          <div style={{ width: "142.5px" }}></div>
+        <div className="mb-4">
+          <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+            {/* Botón volver */}
+            <a
+              href="/productos"
+              className="btn btn-outline-light"
+              style={{
+                borderColor: "#d4af37",
+                color: "#d4af37",
+                fontSize: "0.9rem",
+                padding: "6px 12px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              ← Volver a productos
+            </a>
+
+            {/* Título */}
+            <h1
+              className="m-0 text-center w-100"
+              style={{
+                color: "#d4af37",
+                fontSize: "clamp(1.6rem, 5vw, 2.4rem)",
+                fontWeight: "600",
+              }}
+            >
+              🛒 Carrito de compras
+            </h1>
+          </div>
         </div>
 
         {carrito.length === 0 ? (
