@@ -111,8 +111,17 @@ builder.Services.AddCors(options =>
 // Base de datos
 // ==========================================
 
+var postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
+if (string.IsNullOrWhiteSpace(postgresConnectionString))
+{
+    throw new InvalidOperationException(
+        "Falta ConnectionStrings:PostgreSQLConnection. En Render define ConnectionStrings__PostgreSQLConnection con la cadena Npgsql (Host=...;Username=...;Password=...;Database=...;SSL Mode=Require).");
+}
+
+LogPostgresTarget(postgresConnectionString);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection"))
+    options.UseNpgsql(postgresConnectionString)
            .UseSnakeCaseNamingConvention());
 
 
@@ -174,6 +183,48 @@ builder.Services.AddScoped<IStripeService, StripeService>();
 // ==========================================
 // Construir app
 // ==========================================
+static void LogPostgresTarget(string cs)
+{
+    try
+    {
+        var trimmed = cs.Trim();
+        if (trimmed.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase)
+            || trimmed.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
+        {
+            var uri = new Uri(trimmed);
+            var userInfo = uri.UserInfo.Split(':', 2);
+            var user = userInfo.Length > 0 ? Uri.UnescapeDataString(userInfo[0]) : "?";
+            var db = uri.AbsolutePath.TrimStart('/');
+            Console.WriteLine($"[DB] Host={uri.Host} Port={uri.Port} Database={db} Username={user}");
+            return;
+        }
+
+        string? Get(string key)
+        {
+            foreach (var part in trimmed.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                var idx = part.IndexOf('=');
+                if (idx <= 0) continue;
+                var k = part[..idx].Trim();
+                var v = part[(idx + 1)..].Trim();
+                if (k.Equals(key, StringComparison.OrdinalIgnoreCase))
+                    return v;
+            }
+            return null;
+        }
+
+        var host = Get("Host") ?? Get("Server");
+        var port = Get("Port");
+        var database = Get("Database");
+        var username = Get("Username") ?? Get("User ID") ?? Get("User");
+        Console.WriteLine($"[DB] Host={host} Port={port} Database={database} Username={username}");
+    }
+    catch
+    {
+        Console.WriteLine("[DB] No se pudo interpretar la cadena de conexión para el log (formato inválido).");
+    }
+}
+
 var app = builder.Build();
 
 // Swagger
