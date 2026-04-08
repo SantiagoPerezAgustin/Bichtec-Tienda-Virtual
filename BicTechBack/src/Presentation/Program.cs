@@ -186,7 +186,8 @@ app.UseCors("AllowAll");
 // Middleware de excepciones personalizado
 app.UseMiddleware<BicTechBack.src.API.Extensions.ExceptionMiddleware>();
 
-app.UseHttpsRedirection();
+// Sin UseHttpsRedirection: en Docker/Render el TLS lo termina el proxy; el contenedor solo escucha HTTP
+// y evita "Failed to determine the https port for redirect".
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -199,8 +200,5 @@ app.MapGet("/", context =>
     context.Response.Redirect("/swagger");
     return Task.CompletedTask;
 });
-
-// Puerto dinámico para Render
-// if (!app.Environment.IsDevelopment()) { var port = Environment.GetEnvironmentVariable("PORT") ?? "5000"; app.Urls.Add($"http://*:{port}"); }
 
 app.Run();
