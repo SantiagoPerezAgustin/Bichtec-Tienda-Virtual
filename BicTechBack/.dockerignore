@@ -1,0 +1,41 @@
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# Tests (no hace falta en la imagen)
+**/tests/
+**/TestResults/
+**/*Tests*/
+**/*.Tests/
+
+# IDE / OS
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+**/.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# NuGet caches locales si existieran en el árbol
+**/packages/
+**/.nuget/
+
+# Front / deps JS si existieran dentro del árbol del back
+**/node_modules/
+**/dist/
+
+# Docs / misc
+**/*.md
+**/Readme*
+LICENSE*
+
+# Logs
+**/*.log

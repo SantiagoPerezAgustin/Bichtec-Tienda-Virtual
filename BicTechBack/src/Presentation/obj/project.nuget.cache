@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wZCgygacjns=",
+  "dgSpecHash": "IX/NG3gtrHI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\santi\\Desktop\\Work\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
+  "projectFilePath": "c:\\Users\\santi\\Desktop\\Work\\BICTECH-Tienda-Virtual\\BicTechBack\\src\\Presentation\\Presentation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\santi\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\santi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
