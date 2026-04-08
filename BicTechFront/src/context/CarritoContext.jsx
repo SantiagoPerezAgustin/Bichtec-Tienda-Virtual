@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
 
 export const CarritoContext = createContext();
 
@@ -18,6 +18,13 @@ export const CarritoProvider = ({ children }) => {
         },
       }).then(async (res) => {
         if (!res.ok) {
+          const errBody = await res.text();
+          try {
+            const j = JSON.parse(errBody);
+            console.error("GET carrito error:", res.status, j.message || j.error || j);
+          } catch {
+            console.error("GET carrito error:", res.status, errBody);
+          }
           setCarrito([]);
           return;
         }
@@ -45,8 +52,16 @@ export const CarritoProvider = ({ children }) => {
     );
     console.log("Carrito actualizado:", carrito);
     if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Error al agregar producto");
+      const raw = await res.text();
+      let msg = `HTTP ${res.status}`;
+      try {
+        const errorData = JSON.parse(raw);
+        msg = errorData.error || errorData.message || msg;
+        console.error("POST agregar carrito:", res.status, errorData);
+      } catch {
+        console.error("POST agregar carrito:", res.status, raw);
+      }
+      throw new Error(msg);
     }
     // Refresca el carrito
     const res2 = await fetch(`${API_URL}/carritos/${usuario.id}`, {

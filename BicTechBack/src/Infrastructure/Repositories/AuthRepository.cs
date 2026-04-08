@@ -14,17 +14,17 @@ namespace BicTechBack.src.Infrastructure.Repositories
 
         public async Task<Usuario?> GetByEmailAsync(string email)
         {
+            // Sin Include: login/registro solo necesitan columnas de usuarios; incluir Carritos/Pedidos
+            // rompe si esas tablas tienen esquema distinto (p. ej. columnas legacy).
             return await _context.Usuarios
-                .Include(u => u.Carritos)
-                .Include(u => u.Pedidos)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public override async Task<Usuario?> GetByIdAsync(int id)
         {
             return await _context.Usuarios
-                .Include(u => u.Carritos)
-                .Include(u => u.Pedidos)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 

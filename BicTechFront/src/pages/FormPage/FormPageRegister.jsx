@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Register from "../../components/Register/Register";
 import { toast } from "react-toastify";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
 
 const FormPageRegister = () => {
   const nombreRef = useRef(null);
@@ -33,22 +33,31 @@ const FormPageRegister = () => {
       setErrores({});
 
       try {
+        const payload = {
+          nombre: FormData.nombre,
+          email: FormData.email,
+          password: FormData.password,
+        };
         const response = await fetch(`${API_URL}/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(FormData),
+          body: JSON.stringify(payload),
         });
 
         if (response.ok) {
-          const userId = await response.json();
+          await response.json();
           toast.success("✅ Registro exitoso!");
           navigate("/login");
         } else {
-          const error = await response.json();
-          toast.error(error.message);
+          const error = await response.json().catch(() => ({}));
+          const msg =
+            error.error ||
+            error.message ||
+            `Error ${response.status}`;
+          toast.error(msg);
         }
       } catch (err) {
-        toast.error("Error en el registro");
+        toast.error(err?.message || "Error en el registro");
       }
     }
   };

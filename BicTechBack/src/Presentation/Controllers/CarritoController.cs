@@ -3,6 +3,7 @@ using BicTechBack.src.Core.Interfaces;
 using BicTechBack.src.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
@@ -89,14 +90,27 @@ namespace BicTechBack.src.API.Controllers
                 return Forbid();
             }
             _logger.LogInformation("Obteniendo carrito para el usuario {UsuarioId}", usuarioId);
-            var carrito = await _carritoService.GetCarritoByUsuarioIdAsync(usuarioId);
-            if (carrito == null || carrito.Id == 0)
+            try
             {
-                _logger.LogInformation("No se encontró carrito para el usuario {UsuarioId}", usuarioId);
-                return Ok(new { usuarioId, productos = new List<object>() });
+                var carrito = await _carritoService.GetCarritoByUsuarioIdAsync(usuarioId);
+                if (carrito == null || carrito.Id == 0)
+                {
+                    _logger.LogInformation("No se encontró carrito para el usuario {UsuarioId}", usuarioId);
+                    return Ok(new { usuarioId, carritosDetalles = new List<object>() });
+                }
+                _logger.LogInformation("Carrito encontrado para el usuario {UsuarioId}", usuarioId);
+                return Ok(carrito);
             }
-            _logger.LogInformation("Carrito encontrado para el usuario {UsuarioId}", usuarioId);
-            return Ok(carrito);
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Error de BD al obtener carrito. UsuarioId: {UsuarioId}", usuarioId);
+                return StatusCode(500, new { message = "Error al leer el carrito", error = GetDeepestExceptionMessage(ex) });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener carrito. UsuarioId: {UsuarioId}", usuarioId);
+                return StatusCode(500, new { message = "Error al obtener el carrito", error = GetDeepestExceptionMessage(ex) });
+            }
         }
 
         /// <summary>
@@ -175,9 +189,26 @@ namespace BicTechBack.src.API.Controllers
                 _logger.LogWarning("Operación inválida al agregar producto al carrito. UsuarioId: {UsuarioId}, ProductoId: {ProductoId}, Error: {Error}", usuarioId, productoId, ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Error de BD al agregar al carrito. UsuarioId: {UsuarioId}, ProductoId: {ProductoId}", usuarioId, productoId);
+                return StatusCode(500, new { message = "Error al guardar el carrito", error = GetDeepestExceptionMessage(ex) });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al agregar producto al carrito. UsuarioId: {UsuarioId}, ProductoId: {ProductoId}", usuarioId, productoId);
+                return StatusCode(500, new { message = "Error al agregar al carrito", error = GetDeepestExceptionMessage(ex) });
+            }
         }
 
-        // ...
+        private static string GetDeepestExceptionMessage(Exception ex)
+        {
+            var current = ex;
+            while (current.InnerException != null)
+                current = current.InnerException;
+            return current.Message;
+        }
+
         /// <summary>
         /// Elimina un producto del carrito de un usuario.
         /// Solo el usuario propietario o un administrador puede eliminar productos.

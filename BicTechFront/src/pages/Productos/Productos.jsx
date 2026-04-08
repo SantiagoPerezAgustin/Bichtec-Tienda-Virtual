@@ -7,9 +7,7 @@ import { useFiltro } from "../../context/FiltroContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
-const response = await fetch(`${API_URL}/productos`);
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -33,10 +31,17 @@ const Productos = () => {
   const fetchProductos = async () => {
     try {
       const response = await fetch(`${API_URL}/productos`);
+      if (!response.ok) {
+        console.error("Error al obtener productos:", response.status, response.statusText);
+        setProductos([]);
+        return;
+      }
       const data = await response.json();
-      setProductos(Array.isArray(data.productos) ? data.productos : []);
+      const list = data.productos ?? data.Productos;
+      setProductos(Array.isArray(list) ? list : []);
     } catch (error) {
       console.error("Error al obtener productos:", error);
+      setProductos([]);
     }
   };
 

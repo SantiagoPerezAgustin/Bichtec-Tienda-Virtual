@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FiltroContext } from "../../context/FiltroContext";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
 
-fetch(`${API_URL}/categorias`);
 const SIDEBAR_WIDTH = 250;
 
 const SideBar = ({ children }) => {

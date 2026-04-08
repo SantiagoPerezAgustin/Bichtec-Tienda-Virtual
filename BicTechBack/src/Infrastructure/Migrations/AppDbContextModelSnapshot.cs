@@ -4,6 +4,7 @@ using BicTechBack.src.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,250 +16,339 @@ namespace Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Carrito", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("ActualizadoEn")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("actualizado_en");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("usuario_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_carritos");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioId")
+                        .HasDatabaseName("ix_carritos_usuario_id");
 
-                    b.ToTable("Carritos");
+                    b.ToTable("carritos", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.CarritoDetalle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("cantidad");
 
                     b.Property<int>("CarritoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("carrito_id");
 
                     b.Property<int>("ProductoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("producto_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_carritos_detalles");
 
-                    b.HasIndex("CarritoId");
+                    b.HasIndex("CarritoId")
+                        .HasDatabaseName("ix_carritos_detalles_carrito_id");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("ProductoId")
+                        .HasDatabaseName("ix_carritos_detalles_producto_id");
 
-                    b.ToTable("CarritosDetalles");
+                    b.ToTable("carritos_detalles", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Categoria", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("nombre");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_categorias");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("categorias", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.CategoriaMarca", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("categoria_id");
 
                     b.Property<int>("MarcaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("marca_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_categorias_marcas");
 
-                    b.HasIndex("CategoriaId");
+                    b.HasIndex("CategoriaId")
+                        .HasDatabaseName("ix_categorias_marcas_categoria_id");
 
-                    b.HasIndex("MarcaId");
+                    b.HasIndex("MarcaId")
+                        .HasDatabaseName("ix_categorias_marcas_marca_id");
 
-                    b.ToTable("CategoriasMarcas");
+                    b.ToTable("categorias_marcas", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Marca", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("nombre");
 
                     b.Property<int>("PaisId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("pais_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_marcas");
 
-                    b.HasIndex("PaisId");
+                    b.HasIndex("PaisId")
+                        .HasDatabaseName("ix_marcas_pais_id");
 
-                    b.ToTable("Marcas");
+                    b.ToTable("marcas", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Pais", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("nombre");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_paises");
 
-                    b.ToTable("Paises");
+                    b.ToTable("paises", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Pedido", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DireccionEnvio")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("direccion_envio");
 
                     b.Property<int>("Estado")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("estado");
 
                     b.Property<DateTime>("FechaPedido")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_pedido");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("total");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("usuario_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_pedidos");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioId")
+                        .HasDatabaseName("ix_pedidos_usuario_id");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("pedidos", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.PedidoDetalle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("cantidad");
 
                     b.Property<int>("PedidoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("pedido_id");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("precio");
 
                     b.Property<int>("ProductoId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("producto_id");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("subtotal");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_pedidos_detalles");
 
-                    b.HasIndex("PedidoId");
+                    b.HasIndex("PedidoId")
+                        .HasDatabaseName("ix_pedidos_detalles_pedido_id");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("ProductoId")
+                        .HasDatabaseName("ix_pedidos_detalles_producto_id");
 
-                    b.ToTable("PedidosDetalles");
+                    b.ToTable("pedidos_detalles", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Producto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("categoria_id");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("descripcion");
 
                     b.Property<string>("ImagenUrl")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("imagen_url");
 
                     b.Property<int>("MarcaId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("marca_id");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("nombre");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("precio");
 
                     b.Property<int>("Stock")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("stock");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_productos");
 
-                    b.HasIndex("CategoriaId");
+                    b.HasIndex("CategoriaId")
+                        .HasDatabaseName("ix_productos_categoria_id");
 
-                    b.HasIndex("MarcaId");
+                    b.HasIndex("MarcaId")
+                        .HasDatabaseName("ix_productos_marca_id");
 
-                    b.ToTable("Productos");
+                    b.ToTable("productos", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("nombre");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("password");
 
                     b.Property<string>("RefreshToken")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text")
+                        .HasColumnName("refresh_token");
 
                     b.Property<DateTime?>("RefreshTokenExpiryTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("refresh_token_expiry_time");
 
                     b.Property<int>("Rol")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer")
+                        .HasColumnName("rol");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_usuarios");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("usuarios", (string)null);
                 });
 
             modelBuilder.Entity("BicTechBack.src.Core.Entities.Carrito", b =>
@@ -267,7 +357,8 @@ namespace Infrastructure.Migrations
                         .WithMany("Carritos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_carritos_usuarios_usuario_id");
 
                     b.Navigation("Usuario");
                 });
@@ -278,13 +369,15 @@ namespace Infrastructure.Migrations
                         .WithMany("CarritosDetalles")
                         .HasForeignKey("CarritoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_carritos_detalles_carritos_carrito_id");
 
                     b.HasOne("BicTechBack.src.Core.Entities.Producto", "Producto")
                         .WithMany("CarritosDetalles")
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_carritos_detalles_productos_producto_id");
 
                     b.Navigation("Carrito");
 
@@ -297,13 +390,15 @@ namespace Infrastructure.Migrations
                         .WithMany("CategoriasMarcas")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_categorias_marcas_categorias_categoria_id");
 
                     b.HasOne("BicTechBack.src.Core.Entities.Marca", "Marca")
                         .WithMany("CategoriasMarcas")
                         .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_categorias_marcas_marcas_marca_id");
 
                     b.Navigation("Categoria");
 
@@ -316,7 +411,8 @@ namespace Infrastructure.Migrations
                         .WithMany("Marcas")
                         .HasForeignKey("PaisId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_marcas_paises_pais_id");
 
                     b.Navigation("Pais");
                 });
@@ -327,7 +423,8 @@ namespace Infrastructure.Migrations
                         .WithMany("Pedidos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_pedidos_usuarios_usuario_id");
 
                     b.Navigation("Usuario");
                 });
@@ -338,13 +435,15 @@ namespace Infrastructure.Migrations
                         .WithMany("PedidosDetalles")
                         .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_pedidos_detalles_pedidos_pedido_id");
 
                     b.HasOne("BicTechBack.src.Core.Entities.Producto", "Producto")
                         .WithMany("PedidosDetalles")
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_pedidos_detalles_productos_producto_id");
 
                     b.Navigation("Pedido");
 
@@ -357,13 +456,15 @@ namespace Infrastructure.Migrations
                         .WithMany("Productos")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_productos_categorias_categoria_id");
 
                     b.HasOne("BicTechBack.src.Core.Entities.Marca", "Marca")
                         .WithMany("Productos")
                         .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_productos_marcas_marca_id");
 
                     b.Navigation("Categoria");
 
