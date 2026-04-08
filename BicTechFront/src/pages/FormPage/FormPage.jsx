@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
 
 function FormPage() {
   const emailRef = useRef(null);
@@ -54,8 +54,16 @@ function FormPage() {
             toast.error("No se recibió el usuario desde el backend.");
           }
         } else {
-          const error = await response.json();
-          toast.error(error.message || "Error en el inicio de sesión");
+          const text = await response.text();
+          let msg = "Error en el inicio de sesión";
+          try {
+            const error = JSON.parse(text);
+            msg = error.error || error.message || msg;
+            console.error("Login error:", response.status, error);
+          } catch {
+            console.error("Login error:", response.status, text);
+          }
+          toast.error(msg);
         }
       } catch (err) {
         toast.error("No se pudo conectar con el servidor");

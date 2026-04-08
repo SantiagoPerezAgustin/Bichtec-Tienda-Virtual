@@ -56,8 +56,15 @@ namespace BicTechBack.src.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al consultar los pedidos.");
-                return StatusCode(500, new { message = "Error al consultar los pedidos", error = ex.Message });
+                return StatusCode(500, new { message = "Error al consultar los pedidos", error = GetDeepestMessage(ex) });
             }
+        }
+
+        private static string GetDeepestMessage(Exception ex)
+        {
+            var c = ex;
+            while (c.InnerException != null) c = c.InnerException;
+            return c.Message;
         }
 
         /// <summary>

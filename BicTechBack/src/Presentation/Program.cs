@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Application.Interfaces;
 using BicTechBack.src.Core.Entities;
 using BicTechBack.src.Core.Interfaces;
@@ -17,7 +18,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -105,11 +111,9 @@ builder.Services.AddCors(options =>
 // Base de datos
 // ==========================================
 
-//builder.Services.AddDbContext<AppDbContext>(options =>
-     //options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection")));
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection"))
+           .UseSnakeCaseNamingConvention());
 
 
 // AutoMapper
@@ -118,15 +122,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // ==========================================
 // 🔐 Configuración JWT desde variables de entorno
 // ==========================================
-var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY")
-             ?? builder.Configuration["Jwt:Key"];
+var jwtKey = JwtKeyResolver.Resolve(builder.Configuration);
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
                 ?? builder.Configuration["Jwt:Issuer"];
 var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
                   ?? builder.Configuration["Jwt:Audience"];
 
 if (string.IsNullOrEmpty(jwtKey))
-    throw new Exception("JWT_KEY no está definida en las variables de entorno.");
+    throw new Exception("Jwt:Key no está definida (appsettings o JWT_KEY válida).");
 
 var key = Encoding.UTF8.GetBytes(jwtKey);
 

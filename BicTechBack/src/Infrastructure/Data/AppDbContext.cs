@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using BicTechBack.src.Core.Entities;
 
 namespace BicTechBack.src.Infrastructure.Data
@@ -22,6 +21,11 @@ namespace BicTechBack.src.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.Property(e => e.Password).HasColumnName("Password");
+            });
 
             modelBuilder.Entity<Producto>()
                 .Property(p => p.Precio)
@@ -54,6 +58,14 @@ namespace BicTechBack.src.Infrastructure.Data
                 .WithMany(p => p.Marcas)
                 .HasForeignKey(m => m.PaisId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Carrito>()
+                .Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<CarritoDetalle>()
+                .Property(cd => cd.Id)
+                .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Carrito>()
                 .HasOne(c => c.Usuario)

@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Infrastructure.Config;
 using Microsoft.Extensions.Configuration;
 
 namespace BicTechBack.src.Core.Services
@@ -47,7 +48,17 @@ namespace BicTechBack.src.Core.Services
                 throw new InvalidOperationException("Credenciales inválidas.");
             }
 
-            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(usuario, usuario.Password, dto.Password);
+            PasswordVerificationResult passwordVerificationResult;
+            try
+            {
+                passwordVerificationResult = _passwordHasher.VerifyHashedPassword(usuario, usuario.Password, dto.Password);
+            }
+            catch (FormatException ex)
+            {
+                _logger.LogWarning(ex, "Contraseña en BD no es un hash ASP.NET Identity válido. Email: {Email}", dto.Email);
+                throw new InvalidOperationException("Credenciales inválidas.");
+            }
+
             if (passwordVerificationResult == PasswordVerificationResult.Failed)
             {
                 _logger.LogWarning("Intento de login fallido por contraseña incorrecta. Email: {Email}", dto.Email);
@@ -158,8 +169,7 @@ namespace BicTechBack.src.Core.Services
         private string GenerateJwtToken(Usuario usuario)
         {
         
-            var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") 
-                         ?? _configuration["Jwt:Key"];
+            var jwtKey = JwtKeyResolver.Resolve(_configuration);
             var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
                             ?? _configuration["Jwt:Issuer"];
             var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") 

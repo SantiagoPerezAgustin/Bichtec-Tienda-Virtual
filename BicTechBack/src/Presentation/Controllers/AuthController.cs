@@ -2,6 +2,7 @@
 using BicTechBack.src.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BicTechBack.src.API.Controllers
@@ -50,11 +51,25 @@ namespace BicTechBack.src.API.Controllers
                 _logger.LogWarning("Intento de registro con email ya existente: {Email}", dto.Email);
                 return BadRequest(new { message = ex.Message });
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Error de base de datos al registrar. Email: {Email}", dto.Email);
+                var detail = GetDeepestExceptionMessage(ex);
+                return StatusCode(500, new { message = "Error al registrar el usuario", error = detail });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al registrar el usuario. Email: {Email}", dto.Email);
-                return StatusCode(500, new { message = "Error al registrar el usuario", error = ex.Message });
+                return StatusCode(500, new { message = "Error al registrar el usuario", error = GetDeepestExceptionMessage(ex) });
             }
+        }
+
+        private static string GetDeepestExceptionMessage(Exception ex)
+        {
+            var current = ex;
+            while (current.InnerException != null)
+                current = current.InnerException;
+            return current.Message;
         }
 
         /// <summary>
@@ -86,10 +101,15 @@ namespace BicTechBack.src.API.Controllers
                 _logger.LogWarning("Intento de login fallido para el usuario: {Email}", dto.Email);
                 return Unauthorized(new { message = ex.Message });
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Error de base de datos al iniciar sesión. Email: {Email}", dto.Email);
+                return StatusCode(500, new { message = "Error al iniciar sesión", error = GetDeepestExceptionMessage(ex) });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al iniciar sesión. Email: {Email}", dto.Email);
-                return StatusCode(500, new { message = "Error al iniciar sesión", error = ex.Message });
+                return StatusCode(500, new { message = "Error al iniciar sesión", error = GetDeepestExceptionMessage(ex) });
             }
         }
 

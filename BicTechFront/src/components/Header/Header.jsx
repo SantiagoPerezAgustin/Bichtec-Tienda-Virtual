@@ -27,7 +27,6 @@ function ColorSchemesExample() {
     }
   };
 
-  console.log("ROL EN HEADER:", rol);
   return (
     <>
       <nav className="navbar navbar-dark header-fixed navbar-expand-lg custom-navbar-bg">
