@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -115,7 +116,15 @@ var postgresConnectionString = builder.Configuration.GetConnectionString("Postgr
 if (string.IsNullOrWhiteSpace(postgresConnectionString))
 {
     throw new InvalidOperationException(
-        "Falta ConnectionStrings:PostgreSQLConnection. En Render define ConnectionStrings__PostgreSQLConnection con la cadena Npgsql (Host=...;Username=...;Password=...;Database=...;SSL Mode=Require).");
+        "Falta ConnectionStrings:PostgreSQLConnection. En Render define ConnectionStrings__PostgreSQLConnection (Host=...;Database=...;Username=...;SSL Mode=Require). Opcional: POSTGRES_PASSWORD con la clave sola para evitar errores al pegar.");
+}
+
+// Si POSTGRES_PASSWORD está definida, reemplaza la contraseña (útil en Render: clave larga o caracteres que rompen el parsing).
+var passwordOverride = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")?.Trim();
+if (!string.IsNullOrEmpty(passwordOverride))
+{
+    var csb = new NpgsqlConnectionStringBuilder(postgresConnectionString) { Password = passwordOverride };
+    postgresConnectionString = csb.ConnectionString;
 }
 
 LogPostgresTarget(postgresConnectionString);
