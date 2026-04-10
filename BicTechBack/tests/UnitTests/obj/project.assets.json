@@ -1535,7 +1535,7 @@
           }
         }
       },
-      "Npgsql/9.0.3": {
+      "Npgsql/9.0.4": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "8.0.2"
@@ -2070,6 +2070,7 @@
         "dependencies": {
           "Application": "1.0.0",
           "Infrastructure": "1.0.0",
+          "Npgsql": "9.0.4",
           "Swashbuckle.AspNetCore": "6.6.2"
         },
         "compile": {
@@ -4189,10 +4190,10 @@
         "packageIcon.png"
       ]
     },
-    "Npgsql/9.0.3": {
-      "sha512": "tPvY61CxOAWxNsKLEBg+oR646X4Bc8UmyQ/tJszL/7mEmIXQnnBhVJZrZEEUv0Bstu0mEsHZD5At3EO8zQRAYw==",
+    "Npgsql/9.0.4": {
+      "sha512": "68BASXH0FAEuL/J4J0eRfYC8/3vzqQTmoW8zDzNf0JgaVxc7LZeEkS6jaG0ib3voFLxY5ZiCwJG+uQM+mzuu0Q==",
       "type": "package",
-      "path": "npgsql/9.0.3",
+      "path": "npgsql/9.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4201,7 +4202,7 @@
         "lib/net6.0/Npgsql.xml",
         "lib/net8.0/Npgsql.dll",
         "lib/net8.0/Npgsql.xml",
-        "npgsql.9.0.3.nupkg.sha512",
+        "npgsql.9.0.4.nupkg.sha512",
         "npgsql.nuspec",
         "postgresql.png"
       ]
