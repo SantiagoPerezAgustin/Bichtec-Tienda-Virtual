@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import "./Header.css";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
@@ -76,35 +75,15 @@ function ColorSchemesExample() {
                   Inicio
                 </Link>
               </li>
-              <li className="nav-item mx-3 dropdown">
-                <NavDropdown
-                  title={
-                    <span
-                      className={
-                        enSeccionProductos
-                          ? "text-warning fw-bold"
-                          : "text-white fw-bold"
-                      }
-                    >
-                      Productos
-                    </span>
-                  }
-                  id="nav-dropdown-productos"
-                  menuVariant="dark"
-                  align="start"
-                  className="nav-link-hover header-productos-dropdown"
+              <li className="nav-item mx-3">
+                <Link
+                  className={`nav-link nav-link-hover fw-bold ${
+                    enSeccionProductos ? "text-warning" : "text-white"
+                  }`}
+                  to="/productos"
                 >
-                  <NavDropdown.Item as={Link} to="/productos">
-                    Todo el catálogo
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item as={Link} to="/productos/tecnologia">
-                    Tecnología (celulares)
-                  </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/fundas">
-                    Fundas
-                  </NavDropdown.Item>
-                </NavDropdown>
+                  Productos
+                </Link>
               </li>
               <li className="nav-item mx-3">
                 <Link
