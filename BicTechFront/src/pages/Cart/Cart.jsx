@@ -8,7 +8,7 @@ import { WHATSAPP_PHONE } from "../../config/whatsapp";
 const Cart = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const { carrito, actualizarCantidad, quitarDelCarrito } =
+  const { carrito, actualizarCantidad, quitarDelCarrito, obtenerColorSeleccionado } =
     useContext(CarritoContext);
 
     const cartItems = carrito || [];
@@ -27,7 +27,11 @@ const Cart = () => {
     mensaje += `Soy cliente de *BichTec* y quería realizar el siguiente pedido:\n\n`;
 
     cartItems.forEach((item) => {
+      const colorElegido = obtenerColorSeleccionado(item.productoId);
       mensaje += `• ${item.producto.nombre}\n`;
+      if (colorElegido) {
+        mensaje += `  Color: ${colorElegido}\n`;
+      }
       mensaje += `  Cantidad: ${item.cantidad}\n`;
       mensaje += `  Subtotal: $${(
         item.producto.precio * item.cantidad
@@ -118,6 +122,14 @@ const Cart = () => {
                         Unitario: $
                         {item.producto.precio.toLocaleString("es-AR")}
                       </p>
+                      {obtenerColorSeleccionado(item.productoId) && (
+                        <p className="mb-1">
+                          Color:{" "}
+                          <strong>
+                            {obtenerColorSeleccionado(item.productoId)}
+                          </strong>
+                        </p>
+                      )}
 
                       <p className="mb-1 fw-bold text-light">
                         Subtotal: $

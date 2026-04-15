@@ -46,3 +46,20 @@
 .navbar-toggler {
   border-color: #FFD700;
 }
+
+/* Dropdown "Productos" en el header */
+.header-productos-dropdown .dropdown-toggle {
+  color: #fff !important;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.header-productos-dropdown .dropdown-toggle::after {
+  border-top-color: #ffd700;
+  vertical-align: 0.2em;
+}
+
+.header-productos-dropdown .dropdown-menu {
+  border-radius: 10px;
+  margin-top: 0.35rem;
+}

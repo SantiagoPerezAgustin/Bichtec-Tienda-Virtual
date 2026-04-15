@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CarritoContext } from "../../context/CarritoContext";
+import "./CardProducto.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -14,6 +15,24 @@ function CardProducto({
   onModificar,
   recargarProductos,
 }) {
+  const PALETA_COLORES = {
+    negro: "#1f2937",
+    blanco: "#f9fafb",
+    rojo: "#dc2626",
+    azul: "#2563eb",
+    celeste: "#0ea5e9",
+    verde: "#16a34a",
+    rosa: "#ec4899",
+    violeta: "#7c3aed",
+    morado: "#7c3aed",
+    amarillo: "#facc15",
+    naranja: "#f97316",
+    gris: "#6b7280",
+    plateado: "#94a3b8",
+    dorado: "#eab308",
+    transparente: "linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%)",
+  };
+
   function normalizarPrecio(precio) {
     const num = Number(precio);
     if (num < 1000) {
@@ -21,6 +40,43 @@ function CardProducto({
     }
     return num;
   }
+
+  function inferirTipoProducto(nombre = "") {
+    const texto = nombre.toLowerCase();
+    // Prioridad: si en el nombre dice funda/case/cover/protector, debe ser Funda
+    // aunque también mencione marcas/modelos de celulares.
+    if (/(funda|case|cover|protector)/i.test(texto)) {
+      return "Funda";
+    }
+    if (
+      /(iphone|samsung|redmi|poco|motorola|galaxy|xiaomi|pixel|phone|celular)/i.test(
+        texto
+      )
+    ) {
+      return "Celular";
+    }
+    return "Accesorio";
+  }
+
+  const esFunda = inferirTipoProducto(producto?.nombre) === "Funda";
+  const esSilicona =
+    (producto?.materialFunda || "").trim().toLowerCase() === "silicona";
+
+  const coloresFunda = useMemo(() => {
+    const list = (producto?.color || "")
+      .split(/[,/|]/)
+      .map((color) => color.trim())
+      .filter(Boolean);
+    return [...new Set(list.map((c) => c.toLowerCase()))].map(
+      (lower) => list.find((c) => c.toLowerCase() === lower) || lower
+    );
+  }, [producto?.color]);
+
+  const [colorSeleccionado, setColorSeleccionado] = useState("");
+
+  useEffect(() => {
+    setColorSeleccionado(coloresFunda[0] || "");
+  }, [producto?.id, coloresFunda]);
 
   const navigate = useNavigate();
 
@@ -34,8 +90,17 @@ function CardProducto({
       navigate("/login");
     } else {
       try {
-        await agregarAlCarrito(producto.id, 1);
-        toast.success("Producto agregado al carrito!");
+        if (esSilicona && coloresFunda.length > 0 && !colorSeleccionado) {
+          toast.warning("Seleccioná un color antes de agregar al carrito.");
+          return;
+        }
+
+        await agregarAlCarrito(producto.id, 1, colorSeleccionado || null);
+        toast.success(
+          colorSeleccionado
+            ? `Producto agregado al carrito (Color: ${colorSeleccionado})`
+            : "Producto agregado al carrito!"
+        );
       } catch (error) {
         // Mostrar mensaje específico si es error de stock
         if (
@@ -111,6 +176,7 @@ function CardProducto({
 
   return (
     <Card
+      className="card-producto"
       style={{
         minWidth: "9rem",
         maxWidth: "19rem",
@@ -123,6 +189,7 @@ function CardProducto({
       <Card.Img
         variant="top"
         src={producto.imagenUrl}
+        className="card-producto-img"
         style={{
           minHeight: "11rem",
           maxHeight: "18rem",
@@ -132,6 +199,7 @@ function CardProducto({
         }}
       />
       <Card.Body
+        className="card-producto-body"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -142,6 +210,11 @@ function CardProducto({
         }}
       >
         <div>
+          <div className="text-center mb-2">
+            <span className="badge text-bg-light border">
+              {inferirTipoProducto(producto.nombre)}
+            </span>
+          </div>
           <Card.Title
             className="text-center"
             style={{
@@ -173,6 +246,35 @@ function CardProducto({
               })}
             </span>
           </div>
+          {esFunda && esSilicona && (
+            <div className="card-producto-color-select-wrap">
+              <label className="card-producto-color-label">Color</label>
+              {coloresFunda.length > 0 ? (
+                <div className="card-producto-color-input-group">
+                  <span
+                    className="card-producto-color-dot"
+                    style={{
+                      background:
+                        PALETA_COLORES[(colorSeleccionado || "").toLowerCase()] || "#9ca3af",
+                    }}
+                  />
+                  <select
+                    className="card-producto-color-select"
+                    value={colorSeleccionado}
+                    onChange={(e) => setColorSeleccionado(e.target.value)}
+                  >
+                    {coloresFunda.map((color) => (
+                      <option key={`${producto.id}-${color}`} value={color}>
+                        {color}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <div className="card-producto-colores-vacio">Sin colores cargados</div>
+              )}
+            </div>
+          )}
         </div>
         <div className="d-flex justify-content-center gap-2 mt-3 mb-2">
           {producto.stock <= 0 && (

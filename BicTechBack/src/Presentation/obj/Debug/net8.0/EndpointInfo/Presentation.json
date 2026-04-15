@@ -1867,6 +1867,18 @@
             "minLength": 1,
             "type": "string",
             "format": "uri"
+          },
+          "materialFunda": {
+            "maxLength": 32,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

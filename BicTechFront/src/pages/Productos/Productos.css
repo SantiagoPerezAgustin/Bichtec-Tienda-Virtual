@@ -28,3 +28,143 @@
     padding: 1rem;
   }
 }
+
+/* —— Hero: título + carrusel (/productos, /productos/tecnologia, /fundas) —— */
+.productos-hero {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.productos-hero-title {
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.productos-hero-breadcrumb a {
+  color: #0d6efd;
+}
+
+.productos-secciones .seccion-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  padding: 1rem 1.1rem;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #ffffff 0%, #f3f3f3 100%);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+  color: #111;
+}
+
+.productos-secciones .seccion-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.productos-secciones .seccion-card.active {
+  outline: 3px solid #ffc107;
+  box-shadow: 0 8px 24px rgba(255, 193, 7, 0.35);
+}
+
+.seccion-tecnologia {
+  border-left: 5px solid #40a9ff;
+}
+
+.seccion-fundas {
+  border-left: 5px solid #52c41a;
+}
+
+.seccion-accesorios {
+  border-left: 5px solid #9254de;
+}
+
+.seccion-todos {
+  background: linear-gradient(145deg, #1a1a1a 0%, #333 100%) !important;
+  color: #fff !important;
+  padding: 0.75rem 1rem !important;
+  font-weight: 600;
+}
+
+.seccion-card__icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.seccion-card__title {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+
+.seccion-card__subtitle {
+  font-size: 0.82rem;
+  opacity: 0.85;
+  margin-top: 0.2rem;
+}
+
+.productos-carousel-wrap {
+  min-height: 220px;
+}
+
+.productos-carousel-item {
+  position: relative;
+  background: #111;
+}
+
+.productos-carousel-img {
+  height: 320px;
+  object-fit: cover;
+}
+
+@media (min-width: 992px) {
+  .productos-carousel-img {
+    height: 380px;
+  }
+}
+
+.productos-carousel-caption {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.25rem 1.5rem !important;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.2) 60%,
+    transparent 100%
+  );
+  color: #fff !important;
+}
+
+.productos-carousel-caption h3 {
+  font-weight: 800;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 767.98px) {
+  .productos-secciones {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+  }
+
+  .productos-secciones .seccion-card:not(.seccion-todos) {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 140px;
+    padding: 0.75rem;
+  }
+
+  .productos-secciones .seccion-todos {
+    flex: 1 1 100%;
+  }
+
+  .productos-carousel-img {
+    height: 240px;
+  }
+}

@@ -4,6 +4,17 @@ import ValidationsForms from "../Validations/ValidationsForms";
 import { toast } from "react-toastify";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const COLORES_FUNDA = [
+  "Negro",
+  "Blanco",
+  "Rosa",
+  "Azul",
+  "Rojo",
+  "Verde",
+  "Violeta",
+  "Amarillo",
+  "Transparente",
+];
 
 const FormAgregarProducto = ({
   onClose,
@@ -19,10 +30,14 @@ const FormAgregarProducto = ({
     categoriaId: "",
     stock: "",
     imagenUrl: "",
+    materialFunda: "",
+    color: "",
   });
 
   const [errores, setErrores] = useState({});
   const [marcasFiltradas, setMarcasFiltradas] = useState([]);
+
+  const esFunda = /(funda|case|cover|protector)/i.test(form.nombre || "");
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -44,7 +59,16 @@ const FormAgregarProducto = ({
         setMarcasFiltradas([]);
       }
     } else {
-      setForm({ ...form, [name]: value });
+      const nextForm = { ...form, [name]: value };
+      // Si no es funda o cambia a material sin color, limpiamos color.
+      if (name === "nombre" && !/(funda|case|cover|protector)/i.test(value || "")) {
+        nextForm.materialFunda = "";
+        nextForm.color = "";
+      }
+      if (name === "materialFunda" && value !== "Silicona") {
+        nextForm.color = "";
+      }
+      setForm(nextForm);
       setErrores({ ...errores, [name]: "" });
     }
   };
@@ -55,7 +79,10 @@ const FormAgregarProducto = ({
     if (!form.marcaId) erroresVal.marcaId = "La marca es obligatoria";
     if (!form.categoriaId)
       erroresVal.categoriaId = "La categoría es obligatoria";
-     if (Number(form.precio) <= 0) erroresVal.precio = "El precio debe ser mayor a 0";
+    if (Number(form.precio) <= 0) erroresVal.precio = "El precio debe ser mayor a 0";
+    if (esFunda && form.materialFunda === "Silicona" && !form.color) {
+      erroresVal.color = "Para fundas de silicona debes seleccionar un color";
+    }
     if (Object.keys(erroresVal).length > 0) {
       setErrores(erroresVal);
       return;
@@ -75,6 +102,8 @@ const FormAgregarProducto = ({
           CategoriaId: form.categoriaId,
           Stock: form.stock,
           ImagenUrl: form.imagenUrl,
+          MaterialFunda: esFunda ? form.materialFunda || null : null,
+          Color: esFunda && form.materialFunda === "Silicona" ? form.color || null : null,
         }),
       });
       if (response.ok) {
@@ -88,6 +117,8 @@ const FormAgregarProducto = ({
           categoriaId: "",
           stock: "",
           imagenUrl: "",
+          materialFunda: "",
+          color: "",
         });
         onClose && onClose();
       } else {
@@ -247,6 +278,50 @@ const FormAgregarProducto = ({
           <p style={{ color: "red" }}>{errores.imagenUrl}</p>
         )}
       </div>
+      {esFunda && (
+        <div className="mb-2">
+          <label
+            className="form-label"
+            style={{ color: "#222", fontWeight: "bold", marginBottom: "0.2rem" }}
+          >
+            Material de funda
+          </label>
+          <select
+            className="form-control"
+            name="materialFunda"
+            value={form.materialFunda}
+            onChange={handleChange}
+          >
+            <option value="">Selecciona material</option>
+            <option value="Silicona">Silicona</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+      )}
+      {esFunda && form.materialFunda === "Silicona" && (
+        <div className="mb-2">
+          <label
+            className="form-label"
+            style={{ color: "#222", fontWeight: "bold", marginBottom: "0.2rem" }}
+          >
+            Color
+          </label>
+          <select
+            className="form-control"
+            name="color"
+            value={form.color}
+            onChange={handleChange}
+          >
+            <option value="">Selecciona un color</option>
+            {COLORES_FUNDA.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          {errores.color && <p style={{ color: "red" }}>{errores.color}</p>}
+        </div>
+      )}
       <div className="d-flex gap-2 mt-3">
         <Button
           type="submit"

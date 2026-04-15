@@ -7,6 +7,17 @@ import { useNavigate } from "react-router-dom";
 import ValidationsForms from "../Validations/ValidationsForms";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const COLORES_FUNDA = [
+  "Negro",
+  "Blanco",
+  "Rosa",
+  "Azul",
+  "Rojo",
+  "Verde",
+  "Violeta",
+  "Amarillo",
+  "Transparente",
+];
 
 const CardModificarProducto = ({
   producto,
@@ -26,18 +37,34 @@ const CardModificarProducto = ({
     imagenUrl: producto?.imagenUrl || "",
     categoriaId: producto?.categoriaId || "",
     marcaId: producto?.marcaId || "",
+    materialFunda: producto?.materialFunda || "",
+    color: producto?.color || "",
   });
 
   const [errores, setErrores] = useState({});
 
+  const esFunda = /(funda|case|cover|protector)/i.test(form.nombre || "");
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    const nextForm = { ...form, [name]: value };
+    if (name === "nombre" && !/(funda|case|cover|protector)/i.test(value || "")) {
+      nextForm.materialFunda = "";
+      nextForm.color = "";
+    }
+    if (name === "materialFunda" && value !== "Silicona") {
+      nextForm.color = "";
+    }
+    setForm(nextForm);
     setErrores({ ...errores, [e.target.name]: "" }); // Limpia el error al escribir
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const erroresVal = ValidationsForms(form, "producto");
+    if (esFunda && form.materialFunda === "Silicona" && !form.color) {
+      erroresVal.color = "Para fundas de silicona debes seleccionar un color";
+    }
     if (Object.keys(erroresVal).length > 0) {
       setErrores(erroresVal);
       console.log("Errores:", erroresVal);
@@ -75,6 +102,11 @@ const CardModificarProducto = ({
                       ImagenUrl: form.imagenUrl,
                       CategoriaId: Number(form.categoriaId),
                       MarcaId: Number(form.marcaId),
+                      MaterialFunda: esFunda ? form.materialFunda || null : null,
+                      Color:
+                        esFunda && form.materialFunda === "Silicona"
+                          ? form.color || null
+                          : null,
                     }),
                   }
                 );
@@ -233,6 +265,58 @@ const CardModificarProducto = ({
                 <p style={{ color: "red" }}>{errores.imagenUrl}</p>
               )}
             </div>           
+            {esFunda && (
+              <div className="mb-2">
+                <label
+                  className="form-label"
+                  style={{
+                    color: "#222",
+                    fontWeight: "bold",
+                    marginBottom: "0.2rem",
+                  }}
+                >
+                  Material de funda
+                </label>
+                <select
+                  className="form-control"
+                  name="materialFunda"
+                  value={form.materialFunda}
+                  onChange={handleChange}
+                >
+                  <option value="">Selecciona material</option>
+                  <option value="Silicona">Silicona</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+            )}
+            {esFunda && form.materialFunda === "Silicona" && (
+              <div className="mb-2">
+                <label
+                  className="form-label"
+                  style={{
+                    color: "#222",
+                    fontWeight: "bold",
+                    marginBottom: "0.2rem",
+                  }}
+                >
+                  Color
+                </label>
+                <select
+                  className="form-control"
+                  name="color"
+                  value={form.color}
+                  onChange={handleChange}
+                >
+                  <option value="">Selecciona un color</option>
+                  {COLORES_FUNDA.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+                {errores.color && <p style={{ color: "red" }}>{errores.color}</p>}
+              </div>
+            )}
             <div className="d-flex gap-2 mt-3">
               <Button
                 type="submit"

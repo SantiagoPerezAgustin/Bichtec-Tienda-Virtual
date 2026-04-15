@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BicTechBack.src.Core.Common;
 using BicTechBack.src.Core.DTOs;
 using BicTechBack.src.Core.Entities;
 using BicTechBack.src.Core.Interfaces;
@@ -43,6 +44,8 @@ namespace BicTechBack.src.Core.Services
                 _logger.LogWarning("Marca no encontrada al crear producto: {MarcaId}", dto.MarcaId);
                 throw new InvalidOperationException("La marca especificada no existe.");
             }
+
+            NormalizarYValidarMaterialFunda(dto);
 
             var producto = _mapper.Map<Producto>(dto);
             var productoCreado = await _repository.AddAsync(producto);
@@ -133,6 +136,8 @@ namespace BicTechBack.src.Core.Services
                 throw new InvalidOperationException("La marca especificada no existe.");
             }
 
+            NormalizarYValidarMaterialFunda(dto);
+
             _mapper.Map(dto, productoExistente);
 
             var productoActualizado = await _repository.UpdateAsync(productoExistente);
@@ -140,6 +145,36 @@ namespace BicTechBack.src.Core.Services
             _logger.LogInformation("Producto actualizado correctamente. Id: {Id}, Nombre: {Nombre}", productoActualizado.Id, productoActualizado.Nombre);
 
             return _mapper.Map<ProductoDTO>(productoActualizado);
+        }
+
+        /// <summary>
+        /// Fundas de silicona exigen color; otras fundas y el resto de productos no.
+        /// </summary>
+        private static void NormalizarYValidarMaterialFunda(CrearProductoDTO dto)
+        {
+            var mat = MaterialFundaValores.Normalizar(dto.MaterialFunda);
+            dto.MaterialFunda = mat;
+
+            var color = string.IsNullOrWhiteSpace(dto.Color) ? null : dto.Color.Trim();
+            dto.Color = color;
+
+            if (mat is null)
+            {
+                dto.Color = null;
+                return;
+            }
+
+            if (!MaterialFundaValores.EsValido(mat))
+                throw new InvalidOperationException("Material de funda no válido. Use Silicona u Otro.");
+
+            if (mat == MaterialFundaValores.Silicona)
+            {
+                if (string.IsNullOrWhiteSpace(color))
+                    throw new InvalidOperationException("Las fundas de silicona deben incluir un color.");
+                return;
+            }
+
+            // Otro: color no requerido
         }
     }
 }

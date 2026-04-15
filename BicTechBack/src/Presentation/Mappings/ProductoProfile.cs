@@ -17,7 +17,9 @@ namespace BicTechBack.src.Core.Mappings
                 .ForMember(dest => dest.CategoriaId, opt => opt.MapFrom(src => src.CategoriaId))
                 .ForMember(dest => dest.MarcaId, opt => opt.MapFrom(src => src.MarcaId))
                 .ForMember(dest => dest.Stock, opt => opt.MapFrom(src => src.Stock))
-                .ForMember(dest => dest.ImagenUrl, opt => opt.MapFrom(src => src.ImagenUrl));
+                .ForMember(dest => dest.ImagenUrl, opt => opt.MapFrom(src => src.ImagenUrl))
+                .ForMember(dest => dest.MaterialFunda, opt => opt.MapFrom(src => src.MaterialFunda))
+                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color));
         }
     }
 }

@@ -270,6 +270,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("categoria_id");
 
+                    b.Property<string>("Color")
+                        .HasColumnType("text")
+                        .HasColumnName("color");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("text")
@@ -283,6 +287,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MarcaId")
                         .HasColumnType("integer")
                         .HasColumnName("marca_id");
+
+                    b.Property<string>("MaterialFunda")
+                        .HasColumnType("text")
+                        .HasColumnName("material_funda");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
