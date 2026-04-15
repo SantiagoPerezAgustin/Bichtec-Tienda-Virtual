@@ -9,6 +9,34 @@ export const CarritoProvider = ({ children }) => {
   const { usuario } = useContext(AuthContext);
   const [carrito, setCarrito] = useState([]);
 
+  const getColorStorageKey = () =>
+    usuario ? `carrito_colores_${usuario.id}` : "carrito_colores";
+
+  const getColoresMap = () => {
+    try {
+      const raw = localStorage.getItem(getColorStorageKey());
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const setColoresMap = (map) => {
+    localStorage.setItem(getColorStorageKey(), JSON.stringify(map));
+  };
+
+  const guardarColorProducto = (productoId, color) => {
+    if (!productoId || !color) return;
+    const map = getColoresMap();
+    map[String(productoId)] = color;
+    setColoresMap(map);
+  };
+
+  const obtenerColorSeleccionado = (productoId) => {
+    const map = getColoresMap();
+    return map[String(productoId)] || null;
+  };
+
   // Cargar carrito del backend al iniciar sesión
   useEffect(() => {
     if (usuario) {
@@ -38,10 +66,11 @@ export const CarritoProvider = ({ children }) => {
   }, [usuario]);
 
   // Agregar producto al carrito (llama al backend)
-  const agregarAlCarrito = async (productoId, cantidad = 1) => {
+  const agregarAlCarrito = async (productoId, cantidad = 1, color = null) => {
     if (!usuario) return;
+    const colorQuery = color ? `&color=${encodeURIComponent(color)}` : "";
     const res = await fetch(
-      `${API_URL}/carritos/${usuario.id}/productos/${productoId}/add?cantidad=${cantidad}`,
+      `${API_URL}/carritos/${usuario.id}/productos/${productoId}/add?cantidad=${cantidad}${colorQuery}`,
       {
         method: "POST",
         headers: {
@@ -63,6 +92,8 @@ export const CarritoProvider = ({ children }) => {
       }
       throw new Error(msg);
     }
+    if (color) guardarColorProducto(productoId, color);
+
     // Refresca el carrito
     const res2 = await fetch(`${API_URL}/carritos/${usuario.id}`, {
       headers: {
@@ -125,6 +156,10 @@ export const CarritoProvider = ({ children }) => {
       const errorData = await res.json();
       throw new Error(errorData.message || "Error al quitar producto");
     }
+    const map = getColoresMap();
+    delete map[String(productoId)];
+    setColoresMap(map);
+
     const res2 = await fetch(`${API_URL}/carritos/${usuario.id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -152,6 +187,7 @@ export const CarritoProvider = ({ children }) => {
       const errorData = await res.json();
       throw new Error(errorData.message || "Error al vaciar carrito");
     }
+    setColoresMap({});
     setCarrito([]);
   };
 
@@ -163,6 +199,7 @@ export const CarritoProvider = ({ children }) => {
         actualizarCantidad,
         quitarDelCarrito,
         vaciarCarrito,
+        obtenerColorSeleccionado,
       }}
     >
       {children}

@@ -15,6 +15,16 @@ namespace BicTechBack.src.Core.Entities
         public int Stock { get; set; }
         public string ImagenUrl { get; set; }
 
+        /// <summary>
+        /// Para fundas: "Silicona" u "Otro". Null en productos que no aplican.
+        /// </summary>
+        public string? MaterialFunda { get; set; }
+
+        /// <summary>
+        /// Obligatorio si MaterialFunda es silicona; opcional en otros casos.
+        /// </summary>
+        public string? Color { get; set; }
+
         public ICollection<CarritoDetalle> CarritosDetalles { get; set; }
 
         public ICollection<PedidoDetalle> PedidosDetalles { get; set; }

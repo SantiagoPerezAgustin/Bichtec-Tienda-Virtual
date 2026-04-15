@@ -44,5 +44,15 @@
         /// Url de la imagen del producto.
         /// </summary>
         public string ImagenUrl { get; set; }
+
+        /// <summary>
+        /// Silicona u Otro para fundas; null si no aplica.
+        /// </summary>
+        public string? MaterialFunda { get; set; }
+
+        /// <summary>
+        /// Color (obligatorio para fundas de silicona en creación/edición).
+        /// </summary>
+        public string? Color { get; set; }
     }
 }

@@ -1,15 +1,19 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import "./Header.css";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function ColorSchemesExample() {
   const { usuario, logout, rol } = useContext(AuthContext);
+  const location = useLocation();
+  const enSeccionProductos =
+    location.pathname.startsWith("/productos") || location.pathname === "/fundas";
 
   const navigate = useNavigate();
 
@@ -72,13 +76,35 @@ function ColorSchemesExample() {
                   Inicio
                 </Link>
               </li>
-              <li className="nav-item mx-3">
-                <Link
-                  className="nav-link nav-link-hover text-white fw-bold"
-                  to="/productos"
+              <li className="nav-item mx-3 dropdown">
+                <NavDropdown
+                  title={
+                    <span
+                      className={
+                        enSeccionProductos
+                          ? "text-warning fw-bold"
+                          : "text-white fw-bold"
+                      }
+                    >
+                      Productos
+                    </span>
+                  }
+                  id="nav-dropdown-productos"
+                  menuVariant="dark"
+                  align="start"
+                  className="nav-link-hover header-productos-dropdown"
                 >
-                  Productos
-                </Link>
+                  <NavDropdown.Item as={Link} to="/productos">
+                    Todo el catálogo
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} to="/productos/tecnologia">
+                    Tecnología (celulares)
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/fundas">
+                    Fundas
+                  </NavDropdown.Item>
+                </NavDropdown>
               </li>
               <li className="nav-item mx-3">
                 <Link

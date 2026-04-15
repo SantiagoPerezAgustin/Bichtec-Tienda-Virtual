@@ -14,6 +14,7 @@ const SideBar = ({ children }) => {
   const [busqueda, setBusqueda] = useState("");
   const [precioMin, setPrecioMin] = useState("");
   const [precioMax, setPrecioMax] = useState("");
+  const [filtroRapido, setFiltroRapido] = useState("todos");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
@@ -53,6 +54,15 @@ const SideBar = ({ children }) => {
     setMarcaSeleccionada(marca.id || marca._id);
   };
 
+  const limpiarFiltros = () => {
+    setCategoriaSeleccionada(null);
+    setMarcaSeleccionada(null);
+    setBusqueda("");
+    setPrecioMin("");
+    setPrecioMax("");
+    setFiltroRapido("todos");
+  };
+
   const categoriaSeleccionadaObj = categorias.find(
     (cat) => (cat.id || cat._id) === categoriaSeleccionada
   );
@@ -60,7 +70,7 @@ const SideBar = ({ children }) => {
     (marca) => (marca.id || marca._id) === marcaSeleccionada
   );
 
-  const SidebarContent = (
+  const renderSidebarContent = () => (
     <ul className="nav flex-column p-3">
       <li className="mb-3">
         <label className="form-label text-white mb-1">Buscar:</label>
@@ -182,6 +192,15 @@ const SideBar = ({ children }) => {
           onChange={(e) => setPrecioMax(e.target.value)}
         />
       </li>
+      <li className="mb-3">
+        <button
+          type="button"
+          className="btn btn-outline-warning w-100"
+          onClick={limpiarFiltros}
+        >
+          Limpiar filtros
+        </button>
+      </li>
     </ul>
   );
 
@@ -198,6 +217,8 @@ const SideBar = ({ children }) => {
         setPrecioMin,
         precioMax,
         setPrecioMax,
+        filtroRapido,
+        setFiltroRapido,
       }}
     >
       <div className="d-md-none p-2 text-end">
@@ -228,7 +249,7 @@ const SideBar = ({ children }) => {
             zIndex: 100,
           }}
         >
-          {SidebarContent}
+          {renderSidebarContent()}
         </div>
       )}
 
@@ -247,7 +268,7 @@ const SideBar = ({ children }) => {
           className="offcanvas-body text-white"
           style={{ backgroundColor: "#1a1a1a" }}
         >
-          {SidebarContent}
+          {renderSidebarContent()}
         </div>
       </div>
 

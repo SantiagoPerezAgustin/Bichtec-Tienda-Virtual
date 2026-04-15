@@ -52,5 +52,17 @@ namespace BicTechBack.src.Core.DTOs
         [Required(ErrorMessage = "La URL de la imagen es obligatoria")]
         [Url(ErrorMessage = "La URL de la imagen no es válida")]
         public string ImagenUrl { get; set; }
+
+        /// <summary>
+        /// Silicona u Otro para fundas; null si no aplica.
+        /// </summary>
+        [StringLength(32)]
+        public string? MaterialFunda { get; set; }
+
+        /// <summary>
+        /// Requerido cuando <see cref="MaterialFunda"/> es silicona.
+        /// </summary>
+        [StringLength(64)]
+        public string? Color { get; set; }
     }
 }
