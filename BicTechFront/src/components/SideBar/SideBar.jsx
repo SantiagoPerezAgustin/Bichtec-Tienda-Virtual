@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FiltroContext } from "../../context/FiltroContext";
+import { FILTRO_SIN_SELECCION } from "../../constants/filtrosCatalogo";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
 
@@ -14,7 +15,7 @@ const SideBar = ({ children }) => {
   const [busqueda, setBusqueda] = useState("");
   const [precioMin, setPrecioMin] = useState("");
   const [precioMax, setPrecioMax] = useState("");
-  const [filtroRapido, setFiltroRapido] = useState("todos");
+  const [filtroRapido, setFiltroRapido] = useState(FILTRO_SIN_SELECCION);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
@@ -60,7 +61,7 @@ const SideBar = ({ children }) => {
     setBusqueda("");
     setPrecioMin("");
     setPrecioMax("");
-    setFiltroRapido("todos");
+    setFiltroRapido(FILTRO_SIN_SELECCION);
   };
 
   const categoriaSeleccionadaObj = categorias.find(
