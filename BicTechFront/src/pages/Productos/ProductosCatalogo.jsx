@@ -298,7 +298,14 @@ const ProductosCatalogo = ({ pagina }) => {
       imagen: c.imagen,
       count: c.count,
     }));
-    return [...tarjetasPorNombre, ...desdeBd];
+    const hayCategoriaFundasEnBd = categoriasVisuales.some((c) =>
+      /funda/i.test(c.nombre || "")
+    );
+    const virtualesSinDuplicarFundas = tarjetasPorNombre.filter((t) => {
+      if (t.filtro !== FILTRO_NOMBRE_FUNDA) return true;
+      return !hayCategoriaFundasEnBd;
+    });
+    return [...virtualesSinDuplicarFundas, ...desdeBd];
   }, [tarjetasPorNombre, categoriasVisuales]);
 
   /** Con categoría elegida en el panel: solo esa tarjeta (ej. Celulares sin mezclar Fundas). */
