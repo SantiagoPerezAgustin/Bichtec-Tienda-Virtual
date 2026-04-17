@@ -51,11 +51,9 @@ const IMG_FUNDA =
 const IMG_AURICULAR =
   "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80";
 
-function coincideFiltroRapido(producto, filtroRapido, hayFiltroSidebar, categoriaNombrePorId) {
+function coincideFiltroRapido(producto, filtroRapido, categoriaNombrePorId) {
   if (filtroRapido === FILTRO_SIN_SELECCION) {
-    // Sin tarjeta: el panel izquierdo ya redujo la lista (categoría, marca, etc.)
-    if (hayFiltroSidebar) return true;
-    return false;
+    return true; 
   }
   if (filtroRapido === "todos") return true;
   const nombre = producto.nombre || "";
@@ -122,7 +120,6 @@ const ProductosCatalogo = ({ pagina }) => {
 
   useEffect(() => {
     fetchProductos();
-    // eslint-disable-next-line
   }, []);
 
   const fetchProductos = async () => {
@@ -160,7 +157,6 @@ const ProductosCatalogo = ({ pagina }) => {
 
   useEffect(() => {
     fetchCategorias();
-    // eslint-disable-next-line
   }, []);
 
   const categoriaNombrePorId = useMemo(() => {
@@ -324,7 +320,7 @@ const ProductosCatalogo = ({ pagina }) => {
   );
 
   const productosFiltrados = productosPreFiltrados.filter((producto) =>
-    coincideFiltroRapido(producto, filtroRapido, hayFiltroSidebar, categoriaNombrePorId)
+    coincideFiltroRapido(producto, filtroRapido, categoriaNombrePorId)
   );
 
   const productosFiltradosUnicos = dedupeProductos(productosFiltrados);
@@ -343,7 +339,7 @@ const ProductosCatalogo = ({ pagina }) => {
   const renderGrid = (lista) =>
     lista.map((producto, index) => (
       <div
-        className="col-12 col-sm-6 col-md-4 d-flex justify-content-center mb-4"
+        className="col-6 col-md-4 d-flex justify-content-center mb-3 mb-md-4 px-1 px-sm-2"
         key={`producto-${producto.id ?? "sin-id"}-${index}`}
       >
         <CardProducto
@@ -355,8 +351,7 @@ const ProductosCatalogo = ({ pagina }) => {
       </div>
     ));
 
-  const mostrarMensajeElegirTarjeta =
-    filtroRapido === FILTRO_SIN_SELECCION && !hayFiltroSidebar;
+  const mostrarMensajeElegirTarjeta = false;
 
   return (
     <>

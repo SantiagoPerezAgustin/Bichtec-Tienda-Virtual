@@ -17,7 +17,6 @@ const SideBar = ({ children }) => {
   const [precioMax, setPrecioMax] = useState("");
   const [filtroRapido, setFiltroRapido] = useState(FILTRO_SIN_SELECCION);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/categorias`)
@@ -64,6 +63,13 @@ const SideBar = ({ children }) => {
     setFiltroRapido(FILTRO_SIN_SELECCION);
   };
 
+  const quitarFiltroCategoria = () => {
+    setCategoriaSeleccionada(null);
+    setFiltroRapido(FILTRO_SIN_SELECCION);
+  };
+  const quitarFiltroMarca = () => {
+    setMarcaSeleccionada(null);
+  };
   const categoriaSeleccionadaObj = categorias.find(
     (cat) => (cat.id || cat._id) === categoriaSeleccionada
   );
@@ -85,17 +91,37 @@ const SideBar = ({ children }) => {
       </li>
       <hr className="bg-light" />
       {(categoriaSeleccionadaObj || marcaSeleccionadaObj) && (
-        <li className="mb-3">
+        <li className="mb-3 d-flex flex-wrap gap-2 align-items-center">
           {categoriaSeleccionadaObj && (
-            <div className="badge bg-primary mb-1">
-              Categoría:{" "}
-              {categoriaSeleccionadaObj.nombre || categoriaSeleccionadaObj.name}
-            </div>
+            <span className="badge bg-primary d-inline-flex align-items-center gap-2 py-2 px-2">
+              <span>
+                Categoría:{" "}
+                {categoriaSeleccionadaObj.nombre ||
+                  categoriaSeleccionadaObj.name}
+              </span>
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                style={{ transform: "scale(0.65)" }}
+                aria-label="Quitar categoría"
+                onClick={quitarFiltroCategoria}
+              />
+            </span>
           )}
           {marcaSeleccionadaObj && (
-            <div className="badge bg-secondary">
-              Marca: {marcaSeleccionadaObj.nombre || marcaSeleccionadaObj.name}
-            </div>
+            <span className="badge bg-secondary d-inline-flex align-items-center gap-2 py-2 px-2">
+              <span>
+                Marca:{" "}
+                {marcaSeleccionadaObj.nombre || marcaSeleccionadaObj.name}
+              </span>
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                style={{ transform: "scale(0.65)" }}
+                aria-label="Quitar marca"
+                onClick={quitarFiltroMarca}
+              />
+            </span>
           )}
         </li>
       )}
@@ -277,9 +303,6 @@ const SideBar = ({ children }) => {
         className="main-with-sidebar"
         style={{
           marginLeft: windowWidth >= 768 ? SIDEBAR_WIDTH : 0,
-          padding: "20px",
-          background: "#ececec",
-          minHeight: "100vh",
         }}
       >
         {children}

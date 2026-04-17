@@ -1,21 +1,30 @@
 import { useContext } from "react";
-import CartItem from "../../components/CartItem/CartItem";
+import { Link } from "react-router-dom";
 import CartSummary from "../../components/CartSummary/CartSummary";
 import EmptyCart from "../../components/EmptyCart/EmptyCart";
 import { CarritoContext } from "../../context/CarritoContext";
 import { WHATSAPP_PHONE } from "../../config/whatsapp";
+import { formatPrecioARS, formatMontoARS, valorPrecioDisplay } from "../../utils/precio";
+import "./Cart.css";
+
+const IMG_PLACEHOLDER =
+  "https://images.unsplash.com/photo-1468495241042-464ab9f5df4e?auto=format&fit=crop&w=200&q=80";
 
 const Cart = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const { carrito, actualizarCantidad, quitarDelCarrito, obtenerColorSeleccionado } =
     useContext(CarritoContext);
 
-    const cartItems = carrito || [];
+  const cartItems = carrito || [];
 
   const modificarCantidad = (id, nuevaCantidad) => {
     actualizarCantidad(id, nuevaCantidad);
   };
+
+  const total = cartItems.reduce(
+    (acc, item) =>
+      acc + valorPrecioDisplay(item.producto.precio) * item.cantidad,
+    0,
+  );
 
   const finalizarPorWhatsapp = () => {
     if (cartItems.length === 0) {
@@ -28,17 +37,16 @@ const Cart = () => {
 
     cartItems.forEach((item) => {
       const colorElegido = obtenerColorSeleccionado(item.productoId);
+      const sub = valorPrecioDisplay(item.producto.precio) * item.cantidad;
       mensaje += `• ${item.producto.nombre}\n`;
       if (colorElegido) {
         mensaje += `  Color: ${colorElegido}\n`;
       }
       mensaje += `  Cantidad: ${item.cantidad}\n`;
-      mensaje += `  Subtotal: $${(
-        item.producto.precio * item.cantidad
-      ).toLocaleString("es-AR")}\n\n`;
+      mensaje += `  Subtotal: ${formatMontoARS(sub)}\n\n`;
     });
 
-    mensaje += `🧾 *Total del pedido:* $${total.toLocaleString("es-AR")}\n\n`;
+    mensaje += `🧾 *Total del pedido:* ${formatMontoARS(total)}\n\n`;
     mensaje += `Quedo atento/a para coordinar el pago y la entrega 😊\n\n`;
 
     const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
@@ -48,161 +56,107 @@ const Cart = () => {
     window.open(url, "_blank");
   };
 
-
-  const total = cartItems.reduce(
-    (acc, item) => acc + item.producto.precio * item.cantidad,
-    0,
-  );
-
-
   const eliminarItem = (id) => {
     quitarDelCarrito(id);
   };
-  console.log(carrito);
-  return (
-    <div className="bg-dark text-light min-vh-100 py-5">
-      <div
-        className="container-fluid px-5"
-        style={{ maxWidth: "1400px", margin: "0 auto" }}
-      >
-        <div className="mb-4">
-          <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-            {/* Botón volver */}
-            <a
-              href="/productos"
-              className="btn btn-outline-light"
-              style={{
-                borderColor: "#d4af37",
-                color: "#d4af37",
-                fontSize: "0.9rem",
-                padding: "6px 12px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              ← Volver a productos
-            </a>
 
-            {/* Título */}
-            <h1
-              className="m-0 text-center w-100"
-              style={{
-                color: "#d4af37",
-                fontSize: "clamp(1.6rem, 5vw, 2.4rem)",
-                fontWeight: "600",
-              }}
-            >
-              🛒 Carrito de compras
-            </h1>
+  return (
+    <div className="cart-page">
+      <div className="cart-page__inner">
+        <header className="cart-page__top">
+          <Link to="/productos" className="cart-page__back">
+            ← Volver a productos
+          </Link>
+          <div className="cart-page__title-wrap">
+            <h1 className="cart-page__title">Carrito de compras</h1>
+            <p className="cart-page__subtitle">
+              Revisá los productos y confirmá el pedido por WhatsApp
+            </p>
           </div>
-        </div>
+        </header>
 
         {carrito.length === 0 ? (
           <EmptyCart />
         ) : (
-          <div className="row">
-            <div className="col-md-8">
-              {cartItems.map((item) => (
-                <div
-                  key={item.productoId}
-                  className="card mb-3 text-light"
-                  style={{
-                    backgroundColor: "#000",
-                    border: "1px solid #d4af37",
-                  }}
-                >
-                  <div className="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                      <h5
-                        className="card-title mb-1"
-                        style={{ color: "#d4af37" }}
-                      >
-                        {item.producto.nombre}
-                      </h5>
-                      <p className="mb-1">
-                        Unitario: $
-                        {item.producto.precio.toLocaleString("es-AR")}
-                      </p>
-                      {obtenerColorSeleccionado(item.productoId) && (
-                        <p className="mb-1">
-                          Color:{" "}
-                          <strong>
-                            {obtenerColorSeleccionado(item.productoId)}
-                          </strong>
-                        </p>
-                      )}
-
-                      <p className="mb-1 fw-bold text-light">
-                        Subtotal: $
-                        {(item.producto.precio * item.cantidad).toLocaleString(
-                          "es-AR",
-                        )}
-                      </p>
-                      <div className="d-flex align-items-center gap-2 mt-2">
-                        <button
-                          className="btn btn-outline-light btn-sm"
-                          onClick={() =>
-                            modificarCantidad(
-                              item.productoId,
-                              item.cantidad - 1,
-                            )
-                          }
-                          disabled={item.cantidad <= 1}
-                        >
-                          −
-                        </button>
-
-                        <span>{item.cantidad}</span>
-
-                        <button
-                          className="btn btn-outline-light btn-sm"
-                          onClick={() =>
-                            modificarCantidad(
-                              item.productoId,
-                              item.cantidad + 1,
-                            )
-                          }
-                        >
-                          +
-                        </button>
-
-                        <button
-                          className="btn btn-outline-danger btn-sm ms-3"
-                          onClick={() => eliminarItem(item.productoId)}
-                        >
-                          🗑
-                        </button>
+          <div className="row g-4 g-lg-5">
+            <div className="col-lg-8">
+              <div className="cart-page__list">
+                {cartItems.map((item) => {
+                  const img = item.producto?.imagenUrl || IMG_PLACEHOLDER;
+                  const lineTotal =
+                    valorPrecioDisplay(item.producto.precio) * item.cantidad;
+                  return (
+                    <article key={item.productoId} className="cart-line">
+                      <div className="cart-line__thumb-wrap">
+                        <img
+                          className="cart-line__thumb"
+                          src={img}
+                          alt=""
+                          loading="lazy"
+                        />
                       </div>
-                    </div>
-
-                    <div className="text-end">
-                      <p className="mb-0 fw-bold">
-                        $
-                        {(item.producto.precio * item.cantidad).toLocaleString(
-                          "es-AR",
+                      <div className="cart-line__body">
+                        <h2 className="cart-line__name">{item.producto.nombre}</h2>
+                        <p className="cart-line__meta">
+                          Precio unitario:{" "}
+                          <strong>{formatPrecioARS(item.producto.precio)}</strong>
+                        </p>
+                        {obtenerColorSeleccionado(item.productoId) && (
+                          <p className="cart-line__meta">
+                            Color:{" "}
+                            <strong>{obtenerColorSeleccionado(item.productoId)}</strong>
+                          </p>
                         )}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              <div
-                className="p-3 mt-3 rounded"
-                style={{
-                  border: "1px solid #d4af37",
-                  backgroundColor: "#000",
-                }}
-              >
-                <h4 className="mb-0 text-end" style={{ color: "#d4af37" }}>
-                  Total: ${total.toLocaleString("es-AR")}
-                </h4>
+                        <p className="cart-line__subtotal-label">
+                          Subtotal: {formatMontoARS(lineTotal)}
+                        </p>
+                        <div className="cart-line__controls">
+                          <div className="cart-qty" aria-label="Cantidad">
+                            <button
+                              type="button"
+                              className="cart-qty__btn"
+                              onClick={() =>
+                                modificarCantidad(item.productoId, item.cantidad - 1)
+                              }
+                              disabled={item.cantidad <= 1}
+                              aria-label="Disminuir cantidad"
+                            >
+                              −
+                            </button>
+                            <span className="cart-qty__value">{item.cantidad}</span>
+                            <button
+                              type="button"
+                              className="cart-qty__btn"
+                              onClick={() =>
+                                modificarCantidad(item.productoId, item.cantidad + 1)
+                              }
+                              aria-label="Aumentar cantidad"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button
+                            type="button"
+                            className="cart-line__remove"
+                            onClick={() => eliminarItem(item.productoId)}
+                          >
+                            Quitar
+                          </button>
+                        </div>
+                      </div>
+                      <div className="cart-line__price-col">
+                        <p className="cart-line__price">
+                          {formatMontoARS(lineTotal)}
+                        </p>
+                        <p className="cart-line__price-note">Total línea</p>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             </div>
-            <div className="col-md-4">
-              <CartSummary
-                total={total}
-                finalizarPorWhatsapp={finalizarPorWhatsapp}
-              />
+            <div className="col-lg-4">
+              <CartSummary total={total} finalizarPorWhatsapp={finalizarPorWhatsapp} />
             </div>
           </div>
         )}

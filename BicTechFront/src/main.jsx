@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
+import "./styles/producto-imagen.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { CarritoProvider } from "./context/CarritoContext.jsx";
