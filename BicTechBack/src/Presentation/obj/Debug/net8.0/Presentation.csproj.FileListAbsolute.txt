@@ -1110,3 +1110,4 @@ C:\Users\santi\Desktop\Work\BICTECH-Tienda-Virtual\BicTechBack\src\Presentation\
 C:\Users\santi\Desktop\Work\BICTECH-Tienda-Virtual\BicTechBack\src\Presentation\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 C:\Users\santi\Desktop\Work\BICTECH-Tienda-Virtual\BicTechBack\src\Presentation\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
 C:\Users\santi\Desktop\Work\BICTECH-Tienda-Virtual\BicTechBack\src\Presentation\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\santi\Desktop\Work\BICTECH-Tienda-Virtual\BicTechBack\src\Presentation\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

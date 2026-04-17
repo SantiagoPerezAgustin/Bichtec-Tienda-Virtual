@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { CarritoContext } from "../../context/CarritoContext";
+import { formatPrecioARS } from "../../utils/precio";
 
 const DetalleProducto = ({
   producto,
@@ -36,17 +37,19 @@ const DetalleProducto = ({
           ✕
         </button>
         <div className="detalle-body">
-          <img
-            src={producto.imagenUrl}
-            alt={producto.nombre}
-            className="detalle-imagen"
-          />
+          <div className="detalle-imagen-wrap">
+            <img
+              src={producto.imagenUrl}
+              alt={producto.nombre}
+              className="detalle-imagen"
+            />
+          </div>
           <h2 className="detalle-titulo">{producto.nombre}</h2>
           <p className="detalle-descripcion">
             <strong>Descripción:</strong> {producto.descripcion}
           </p>
           <div className="precio-comprar-container">
-            <h2 className="precio">Precio: ${producto.precio}</h2>
+            <h2 className="precio">Precio: {formatPrecioARS(producto.precio)}</h2>
             {producto.stock <= 0 ? (
               <div
                 style={{

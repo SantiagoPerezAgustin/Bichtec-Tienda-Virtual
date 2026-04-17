@@ -22,3 +22,17 @@ body,
   flex: 1 0 auto;
   overflow-y: auto;
 }
+
+/* Área principal junto al sidebar: menos padding en móvil = más ancho útil para la grilla */
+.main-with-sidebar {
+  padding: 10px 6px;
+  background: #ececec;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .main-with-sidebar {
+    padding: 20px;
+  }
+}

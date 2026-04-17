@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CarritoContext } from "../../context/CarritoContext";
 import "./CardProducto.css";
+import { formatPrecioARS } from "../../utils/precio";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -32,14 +33,6 @@ function CardProducto({
     dorado: "#eab308",
     transparente: "linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%)",
   };
-
-  function normalizarPrecio(precio) {
-    const num = Number(precio);
-    if (num < 1000) {
-      return num * 1000;
-    }
-    return num;
-  }
 
   function inferirTipoProducto(nombre = "") {
     const texto = nombre.toLowerCase();
@@ -175,75 +168,28 @@ function CardProducto({
   };
 
   return (
-    <Card
-      className="card-producto"
-      style={{
-        minWidth: "9rem",
-        maxWidth: "19rem",
-        minHeight: "22rem",
-        maxHeight: "30rem",
-        border: "3px solid #FFD700",
-        backgroundColor: "#fdf6e3",
-      }}
-    >
-      <Card.Img
-        variant="top"
-        src={producto.imagenUrl}
-        className="card-producto-img"
-        style={{
-          minHeight: "11rem",
-          maxHeight: "18rem",
-          objectFit: "contain",
-          backgroundColor: "#fff",
-          marginBottom: "0.5rem",
-        }}
-      />
-      <Card.Body
-        className="card-producto-body"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          height: "calc(420px - 180px)",
-          paddingTop: 0,
-          paddingBottom: 0,
-        }}
-      >
+    <Card className="card-producto w-100">
+      <div className="card-producto-img-wrap">
+        <Card.Img
+          variant="top"
+          src={producto.imagenUrl}
+          alt=""
+          className="card-producto-img"
+        />
+      </div>
+      <Card.Body className="card-producto-body">
         <div>
-          <div className="text-center mb-2">
-            <span className="badge text-bg-light border">
+          <div className="text-center mb-1 mb-md-2">
+            <span className="badge text-bg-light border card-producto-badge-tipo">
               {inferirTipoProducto(producto.nombre)}
             </span>
           </div>
-          <Card.Title
-            className="text-center"
-            style={{
-              fontWeight: "bold",
-              fontSize: "1.3rem",
-              marginBottom: "0.25rem",
-              color: "#000",
-              textShadow: "1px 1px 0 #FFD700",
-            }}
-          >
+          <Card.Title className="text-center card-producto-titulo">
             {producto.nombre}
           </Card.Title>
-          <div className="text-center" style={{ marginBottom: "0.5rem" }}>
-            <span
-              style={{
-                color: "#000",
-                fontWeight: "bold",
-                fontSize: "1.2rem",
-                background: "linear-gradient(45deg, #FFD700, #FFEA00)",
-                borderRadius: "8px",
-                padding: "0.25rem 0.75rem",
-                boxShadow: "0 0 6px rgba(0,0,0,0.2)",
-              }}
-            >
-              $
-              {normalizarPrecio(producto.precio).toLocaleString("es-AR", {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              })}
+          <div className="text-center card-producto-precio-wrap">
+            <span className="card-producto-precio">
+              {formatPrecioARS(producto.precio)}
             </span>
           </div>
           {esFunda && esSilicona && (
@@ -276,7 +222,7 @@ function CardProducto({
             </div>
           )}
         </div>
-        <div className="d-flex justify-content-center gap-2 mt-3 mb-2">
+        <div className="d-flex justify-content-center flex-wrap card-producto-actions gap-2 mt-2 mt-md-3 mb-1 mb-md-2">
           {producto.stock <= 0 && (
             <div
               style={{

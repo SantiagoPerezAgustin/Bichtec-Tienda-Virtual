@@ -1,0 +1,16 @@
+/**
+ * Tamaños unificados para fotos de producto (catálogo, carrito, detalle).
+ * object-fit: contain mantiene proporción sin recortes distintos por foto.
+ */
+:root {
+  --producto-img-catalogo-alto: 220px;
+  --producto-img-thumb: 112px;
+  --producto-img-detalle-alto: 280px;
+}
+
+/* En pantallas chicas: foto un poco más baja + tarjeta menos alta en total */
+@media (max-width: 767.98px) {
+  :root {
+    --producto-img-catalogo-alto: 150px;
+  }
+}

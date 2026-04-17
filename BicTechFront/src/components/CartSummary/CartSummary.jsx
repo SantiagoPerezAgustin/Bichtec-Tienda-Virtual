@@ -1,92 +1,26 @@
-import { useContext, useState } from "react";
-import { CarritoContext } from "../../context/CarritoContext";
-import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import "../../pages/Cart/Cart.css";
+import { formatMontoARS } from "../../utils/precio";
 
 const CartSummary = ({ total, finalizarPorWhatsapp }) => {
-  const { carrito, vaciarCarrito } = useContext(CarritoContext);
-  const { usuario } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [direccionEnvio, setDireccionEnvio] = useState("");
-
-  const handleFinalizarCompra = async () => {
-    if (!usuario) {
-      toast.error("Debes iniciar sesión para finalizar la compra.");
-      navigate("/login");
-      return;
-    }
-    if (!items.length) {
-      toast.error("El carrito está vacío.");
-      return;
-    }
-    if (!direccionEnvio.trim()) {
-      toast.error("Debes ingresar una dirección de envío.");
-      return;
-    }
-    console.log("Items:", items);
-    try {
-      const detalles = items.map((item) => ({
-        productoId: item.productoId,
-        cantidad: item.cantidad,
-        precio: item.producto?.precio ?? 0,
-      }));
-
-      const res = await fetch(`${API_URL}/pedidos`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          usuarioId: usuario.id,
-          direccionEnvio,
-          detalles,
-        }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Error al finalizar compra");
-      }
-
-      vaciarCarrito();
-      toast.success("¡Compra realizada con éxito!");
-      navigate("/carrito");
-    } catch (error) {
-      toast.error("Error al finalizar compra: " + error.message);
-    }
-  };
-
-
   return (
-    <div
-      className="card text-light shadow-sm"
-      style={{ backgroundColor: "#000", border: "1px solid #d4af37" }}
-    >
-      <div className="card-body">
-        <h4 className="card-title" style={{ color: "#d4af37" }}>
-          Resumen de compra
-        </h4>
-        <hr style={{ borderColor: "#d4af37" }} />
-        <p className="fs-5">
-          Total:{" "}
-          <strong style={{ color: "#d4af37" }}>
-            ${total.toLocaleString("es-AR", { minimumFractionDigits: 0 })}
-          </strong>
+    <div className="card cart-summary text-light border-0">
+      <div className="cart-summary__header">
+        <h3 className="cart-summary__title">Resumen</h3>
+        <p className="cart-summary__hint">
+          Total estimado. Coordiná pago y entrega por WhatsApp.
         </p>
+      </div>
+      <div className="cart-summary__body">
+        <div className="cart-summary__row">
+          <span className="cart-summary__label">Total</span>
+          <span className="cart-summary__total">{formatMontoARS(total)}</span>
+        </div>
         <button
+          type="button"
           onClick={finalizarPorWhatsapp}
-          className="btn w-100 mt-3 d-flex align-items-center justify-content-center gap-2"
-          style={{
-            backgroundColor: "#25D366",
-            color: "#000",
-            fontWeight: "bold",
-          }}
+          className="cart-summary__wa"
         >
-          <i className="bi bi-whatsapp"></i>
+          <i className="bi bi-whatsapp" aria-hidden />
           Finalizar pedido por WhatsApp
         </button>
       </div>

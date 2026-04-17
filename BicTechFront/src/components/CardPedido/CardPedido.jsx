@@ -1,4 +1,5 @@
 import React from "react";
+import { formatMontoARS } from "../../utils/precio";
 
 const estados = ["Pendiente", "Enviado", "Entregado", "Cancelado"];
 
@@ -17,14 +18,14 @@ const CardPedido = ({ pedido, onCambiarEstado }) => {
       <div><b>Usuario:</b> {pedido.usuario?.nombre} {pedido.usuario?.apellido} ({pedido.usuario?.email})</div>
       <div><b>Dirección:</b> {pedido.direccionEnvio}</div>
       <div><b>Fecha:</b> {new Date(pedido.fechaPedido).toLocaleString()}</div>
-      <div><b>Total:</b> ${pedido.total}</div>
+      <div><b>Total:</b> {formatMontoARS(pedido.total)}</div>
       <div><b>Estado:</b> <span style={{fontWeight: "bold", color: "#bfa100"}}>{pedido.estado}</span></div>
       <div style={{margin: "8px 0"}}>
         <b>Productos:</b>
         <ul>
           {pedido.pedidosDetalles?.map((det, idx) => (
             <li key={idx}>
-              {det.producto?.nombre || "Producto"} x{det.cantidad} - ${det.precio} (Subtotal: ${det.subtotal})
+              {det.producto?.nombre || "Producto"} x{det.cantidad} — {formatMontoARS(det.precio)} (Subtotal: {formatMontoARS(det.subtotal)})
             </li>
           ))}
         </ul>

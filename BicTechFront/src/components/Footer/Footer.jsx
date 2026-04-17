@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
@@ -23,9 +24,9 @@ const Footer = () => {
           Combinanción de calidad, asesoramiento y precios competitivos.
         </div>
         <div className="footer-links">
-          <a href="/">Inicio</a>
-          <a href="/productos">Productos</a>
-          <a href="/sobre-nosotros">Contacto</a>
+          <Link to="/">Inicio</Link>
+          <Link to="/productos">Productos</Link>
+          <Link to="/sobre-nosotros">Contacto</Link>
         </div>
         <div className="footer-copy">
           &copy; {new Date().getFullYear()} BICHTEC. Todos los derechos
