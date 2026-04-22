@@ -1,0 +1,35 @@
+# --- .NET ---
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+*.DotSettings.user
+
+# Secretos locales (no subir)
+**/appsettings.*.local.json
+**/secrets.json
+
+# SQL con datos reales / hashes (generar con scripts/build_supabase_data_only.py)
+BicTechBack/supabase_data_only.sql
+
+# --- Node / Vite ---
+**/node_modules/
+**/dist/
+**/.env
+**/.env.*
+!**/.env.example
+
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+.idea/
+**/.vs/
+.vscode/*
+!.vscode/extensions.json
