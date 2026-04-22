@@ -176,7 +176,8 @@ namespace BicTechBack.src.Core.Services
                               ?? _configuration["Jwt:Audience"];
 
             if (string.IsNullOrEmpty(jwtKey))
-                throw new Exception("JWT_KEY no está definida en las variables de entorno.");
+                throw new InvalidOperationException(
+                    "Falta clave JWT: definí JWT_KEY (32+ caracteres) en Render o Jwt:Key en appsettings.");
 
             var claims = new[]
             {
