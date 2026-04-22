@@ -44,30 +44,16 @@ builder.Services.AddSwaggerGen(options =>
     var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
 
+    // Http + bearer: Swagger UI muestra bien "Authorize" y el candado (ApiKey + Bearer suele fallar).
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Ingresa 'Bearer' seguido de tu token JWT"
+        Description = "JWT: pegá solo el token (Swagger agrega \"Bearer\"). Obtenelo con POST /auth/login.",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
 
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
+    options.OperationFilter<BicTechBack.src.Presentation.Swagger.AuthorizeOperationFilter>();
 });
 
 // ==========================================
@@ -176,13 +162,18 @@ builder.Services.AddAuthentication(options =>
 // ==========================================
 builder.Services.Configure<StripeOptions>(opts =>
 {
-    opts.BaseUrl = Environment.GetEnvironmentVariable("STRIPE_BASEURL")
-                   ?? builder.Configuration["Stripe:BaseUrl"];
-    opts.SecretKey = Environment.GetEnvironmentVariable("STRIPE_SECRETKEY")
-                     ?? builder.Configuration["Stripe:SecretKey"];
+    // Si la variable existe pero está vacía en Render, no pisar appsettings (?? solo cubre null).
+    var stripeBase = Environment.GetEnvironmentVariable("STRIPE_BASEURL");
+    opts.BaseUrl = string.IsNullOrWhiteSpace(stripeBase)
+        ? builder.Configuration["Stripe:BaseUrl"]
+        : stripeBase;
+    var stripeSecret = Environment.GetEnvironmentVariable("STRIPE_SECRETKEY");
+    opts.SecretKey = string.IsNullOrWhiteSpace(stripeSecret)
+        ? builder.Configuration["Stripe:SecretKey"]
+        : stripeSecret;
 
-    if (string.IsNullOrEmpty(opts.SecretKey))
-        throw new Exception("STRIPE_SECRETKEY no está definida en las variables de entorno.");
+    if (string.IsNullOrWhiteSpace(opts.SecretKey))
+        throw new Exception("Stripe:SecretKey vacía. Definí STRIPE_SECRETKEY o Stripe:SecretKey en configuración.");
 });
 
 // Servicio Stripe
@@ -238,7 +229,11 @@ var app = builder.Build();
 
 // Swagger
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BicTech API v1");
+    c.ConfigObject.PersistAuthorization = true;
+});
 
 // CORS
 app.UseCors("AllowAll");
