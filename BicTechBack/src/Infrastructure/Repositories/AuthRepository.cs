@@ -39,12 +39,25 @@ namespace BicTechBack.src.Infrastructure.Repositories
 
         public async Task SaveRefreshTokenAsync(int id, string refreshToken, DateTime dateTime)
         {
-            // Un solo UPDATE (mejor con Supabase Session pooler que Find + SaveChanges, que a veces cuelga).
-            await _context.Usuarios
-                .Where(u => u.Id == id)
-                .ExecuteUpdateAsync(setters => setters
-                    .SetProperty(u => u.RefreshToken, refreshToken)
-                    .SetProperty(u => u.RefreshTokenExpiryTime, dateTime));
+            // ExecuteUpdate no existe en InMemory (tests de integración); en Postgres un solo UPDATE ayuda con el pooler.
+            if (_context.Database.IsRelational())
+            {
+                await _context.Usuarios
+                    .Where(u => u.Id == id)
+                    .ExecuteUpdateAsync(setters => setters
+                        .SetProperty(u => u.RefreshToken, refreshToken)
+                        .SetProperty(u => u.RefreshTokenExpiryTime, dateTime));
+                return;
+            }
+
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario != null)
+            {
+                usuario.RefreshToken = refreshToken;
+                usuario.RefreshTokenExpiryTime = dateTime;
+                _context.Usuarios.Update(usuario);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> UpdatePasswordAsync(int id, string newPassword)
