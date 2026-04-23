@@ -4,8 +4,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>bin\Debug\net8.0\Presentation.xml</DocumentationFile>
+		<!-- Sin ruta fija a bin\Debug: en Release/publish (p. ej. Render) el XML debe salir junto al DLL o Swagger puede fallar al cargar swagger.json. -->
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
