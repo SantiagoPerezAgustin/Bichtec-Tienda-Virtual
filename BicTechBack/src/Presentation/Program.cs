@@ -19,6 +19,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Render (y otros PaaS) inyectan PORT; el contenedor debe escuchar en 0.0.0.0 para que el proxy no devuelva 502.
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(port))
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
     {

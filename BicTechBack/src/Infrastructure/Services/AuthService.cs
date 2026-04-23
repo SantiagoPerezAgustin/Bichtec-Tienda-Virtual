@@ -92,19 +92,20 @@ namespace BicTechBack.src.Core.Services
 
         public async Task<int> RegisterUserAsync(RegisterUsuarioDTO dto)
         {
-            _logger.LogInformation("Intentando registrar usuario: {Email}", dto.Email);
+            var emailNorm = dto.Email.Trim().ToLowerInvariant();
+            _logger.LogInformation("Intentando registrar usuario: {Email}", emailNorm);
 
-            var usuarioExistente = await _repository.GetByEmailAsync(dto.Email);
+            var usuarioExistente = await _repository.GetByEmailAsync(emailNorm);
             if (usuarioExistente != null)
             {
-                _logger.LogWarning("Intento de registro con email ya existente: {Email}", dto.Email);
+                _logger.LogWarning("Intento de registro con email ya existente: {Email}", emailNorm);
                 throw new InvalidOperationException("El usuario ya existe con ese email.");
             }
 
             var usuario = new Usuario
             {
-                Nombre = dto.Nombre,
-                Email = dto.Email,
+                Nombre = dto.Nombre.Trim(),
+                Email = emailNorm,
                 Rol = RolUsuario.User
             };
 

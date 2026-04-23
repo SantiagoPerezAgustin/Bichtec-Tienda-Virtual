@@ -21,10 +21,13 @@ namespace BicTechBack.src.Infrastructure.Repositories
 
         public async Task<Usuario?> GetByEmailAsync(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return null;
+            var normalized = email.Trim().ToLowerInvariant();
             return await _context.Usuarios
                 .Include(u => u.Pedidos)
                 .Include(u => u.Carritos)
-                .FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == normalized);
         }
 
         public override async Task<IEnumerable<Usuario>> GetAllAsync()
