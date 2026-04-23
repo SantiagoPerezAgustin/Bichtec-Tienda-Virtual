@@ -16,9 +16,16 @@ namespace BicTechBack.src.Infrastructure.Repositories
         {
             // Sin Include: login/registro solo necesitan columnas de usuarios; incluir Carritos/Pedidos
             // rompe si esas tablas tienen esquema distinto (p. ej. columnas legacy).
+            if (string.IsNullOrWhiteSpace(email))
+                return null;
+
+            // Misma semántica que el resto de la app: email insensible a mayúsculas y sin espacios extremos.
+            // Antes usaba "==" (sensible a mayúsculas): podías ver "ya existe" con un casing y al loguear con otro
+            // no encontraba fila o el cliente parecía colgarse si el backend tardaba / timeout en otra capa.
+            var normalized = email.Trim().ToLowerInvariant();
             return await _context.Usuarios
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == email);
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == normalized);
         }
 
         public override async Task<Usuario?> GetByIdAsync(int id)
