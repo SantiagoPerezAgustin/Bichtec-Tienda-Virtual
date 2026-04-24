@@ -202,6 +202,7 @@ static void LogPostgresTarget(string cs)
             var user = userInfo.Length > 0 ? Uri.UnescapeDataString(userInfo[0]) : "?";
             var db = uri.AbsolutePath.TrimStart('/');
             Console.WriteLine($"[DB] Host={uri.Host} Port={uri.Port} Database={db} Username={user}");
+            WarnIfSupabaseTransactionPooler(uri.Port > 0 ? uri.Port : null);
             return;
         }
 
@@ -224,11 +225,22 @@ static void LogPostgresTarget(string cs)
         var database = Get("Database");
         var username = Get("Username") ?? Get("User ID") ?? Get("User");
         Console.WriteLine($"[DB] Host={host} Port={port} Database={database} Username={username}");
+        var portNum = int.TryParse(port, out var pn) ? pn : (int?)null;
+        WarnIfSupabaseTransactionPooler(portNum);
     }
     catch
     {
         Console.WriteLine("[DB] No se pudo interpretar la cadena de conexión para el log (formato inválido).");
     }
+}
+
+static void WarnIfSupabaseTransactionPooler(int? port)
+{
+    if (port != 6543)
+        return;
+    Console.WriteLine(
+        "[DB] ADVERTENCIA: Puerto 6543 = pooler transaccional de Supabase. Con EF Core las escrituras del login (refresh token) suelen colgarse o provocar 502 en el proxy. " +
+        "En Render, usa «Direct connection» o «Session mode» del dashboard (p. ej. db.<ref>.supabase.co:5432), no Transaction + 6543.");
 }
 
 var app = builder.Build();
