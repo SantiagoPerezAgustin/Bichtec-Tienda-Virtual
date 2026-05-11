@@ -118,16 +118,19 @@ builder.Services.AddCors(options =>
 // ==========================================
 
 var postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
+
+// Limpiamos espacios en blanco por si acaso
+postgresConnectionString = postgresConnectionString?.Trim();
+
 if (string.IsNullOrWhiteSpace(postgresConnectionString))
 {
-    throw new InvalidOperationException(
-        "Falta ConnectionStrings:PostgreSQLConnection. En Render define ConnectionStrings__PostgreSQLConnection (Host=...;Database=...;Username=...;SSL Mode=Require). Opcional: POSTGRES_PASSWORD con la clave sola para evitar errores al pegar.");
+    throw new InvalidOperationException("Falta ConnectionStrings:PostgreSQLConnection...");
 }
 
-// Si POSTGRES_PASSWORD está definida, reemplaza la contraseña (útil en Render: clave larga o caracteres que rompen el parsing).
 var passwordOverride = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")?.Trim();
 if (!string.IsNullOrEmpty(passwordOverride))
 {
+    // Esto es lo que fallaba si el string original era una URL
     var csb = new NpgsqlConnectionStringBuilder(postgresConnectionString) { Password = passwordOverride };
     postgresConnectionString = csb.ConnectionString;
 }
