@@ -14,6 +14,14 @@
   overflow-y: auto;
 }
 
+/* Evita que el track del grid fuerce un ancho mínimo raro sobre las tarjetas */
+.productos-grid > * {
+  min-width: 0;
+  width: 100%;
+  max-width: 19rem;
+  justify-self: center;
+}
+
 
 @media (max-width: 991.98px) {
   .productos-grid {
