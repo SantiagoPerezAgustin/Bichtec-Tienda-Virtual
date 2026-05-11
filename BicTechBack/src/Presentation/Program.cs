@@ -92,11 +92,7 @@ builder.Services.AddSingleton<Application.Interfaces.IImageWebpEncoder, Infrastr
 builder.Services.AddHttpClient(nameof(BicTechBack.src.API.Controllers.ImagenesController));
 builder.Services.AddHttpClient("ProductoWebpProxy", client =>
 {
-    client.Timeout = TimeSpan.FromSeconds(90);
-    client.DefaultRequestHeaders.TryAddWithoutValidation(
-        "User-Agent",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
-    client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "image/avif,image/webp,image/apng,image/*,*/*;q=0.8");
+    client.Timeout = TimeSpan.FromSeconds(60);
 });
 
 builder.Services.Configure<ProductoImagenWebpOptions>(

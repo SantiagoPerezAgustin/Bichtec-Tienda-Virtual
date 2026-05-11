@@ -69,6 +69,8 @@ public class ProductoImagenWebpPublicController : ControllerBase
             return BadRequest();
 
         using var client = _httpClientFactory.CreateClient(HttpClientName);
+        client.Timeout = TimeSpan.FromSeconds(60);
+        client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "BicTechBack-ProductoWebp/1.0");
 
         using var response = await client
             .GetAsync(sourceUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
