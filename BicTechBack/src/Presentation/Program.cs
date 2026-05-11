@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Application.Interfaces;
+using Application.Options;
 using BicTechBack.src.Core.Entities;
 using BicTechBack.src.Core.Interfaces;
 using BicTechBack.src.Core.Services;
@@ -87,6 +88,18 @@ builder.Services.AddScoped<ICarritoService, CarritoService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+builder.Services.AddSingleton<Application.Interfaces.IImageWebpEncoder, Infrastructure.Services.ImageWebpEncoder>();
+builder.Services.AddHttpClient(nameof(BicTechBack.src.API.Controllers.ImagenesController));
+builder.Services.AddHttpClient("ProductoWebpProxy", client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(60);
+});
+
+builder.Services.Configure<ProductoImagenWebpOptions>(
+    builder.Configuration.GetSection(ProductoImagenWebpOptions.SectionName));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IProductoImagenWebpUrlRewriter, Infrastructure.Services.ProductoImagenWebpUrlRewriter>();
 
 
 // ==========================================

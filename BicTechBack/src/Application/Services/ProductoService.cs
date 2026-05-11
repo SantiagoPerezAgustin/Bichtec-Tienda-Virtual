@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Interfaces;
+using AutoMapper;
 using BicTechBack.src.Core.Common;
 using BicTechBack.src.Core.DTOs;
 using BicTechBack.src.Core.Entities;
@@ -13,15 +14,30 @@ namespace BicTechBack.src.Core.Services
         private readonly IMarcaRepository _marcaRepository;
         private readonly IMapper _mapper;
         private readonly IAppLogger<ProductoService> _logger;
+        private readonly IProductoImagenWebpUrlRewriter _imagenWebpUrlRewriter;
 
-        public ProductoService(IProductoRepository repository, IMarcaRepository marcaRepository,
-            ICategoriaRepository categoriaRepository, IMapper mapper, IAppLogger<ProductoService> logger)
+        public ProductoService(
+            IProductoRepository repository,
+            IMarcaRepository marcaRepository,
+            ICategoriaRepository categoriaRepository,
+            IMapper mapper,
+            IAppLogger<ProductoService> logger,
+            IProductoImagenWebpUrlRewriter imagenWebpUrlRewriter)
         {
             _repository = repository;
             _categoriaRepository = categoriaRepository;
             _marcaRepository = marcaRepository;
             _mapper = mapper;
             _logger = logger;
+            _imagenWebpUrlRewriter = imagenWebpUrlRewriter;
+        }
+
+        private void RewriteImagenUrl(ProductoDTO dto) => _imagenWebpUrlRewriter.Apply(dto);
+
+        private void RewriteImagenUrl(IEnumerable<ProductoDTO> dtos)
+        {
+            foreach (var dto in dtos)
+                _imagenWebpUrlRewriter.Apply(dto);
         }
         public async Task<ProductoDTO> CreateProductoAsync(CrearProductoDTO dto)
         {
@@ -50,7 +66,9 @@ namespace BicTechBack.src.Core.Services
             var producto = _mapper.Map<Producto>(dto);
             var productoCreado = await _repository.AddAsync(producto);
             _logger.LogInformation("Producto creado correctamente. Id: {Id}, Nombre: {Nombre}", productoCreado.Id, productoCreado.Nombre);
-            return _mapper.Map<ProductoDTO>(productoCreado);
+            var dtoCreado = _mapper.Map<ProductoDTO>(productoCreado);
+            RewriteImagenUrl(dtoCreado);
+            return dtoCreado;
         }
 
         public async Task<bool> DeleteProductoAsync(int id)
@@ -75,7 +93,9 @@ namespace BicTechBack.src.Core.Services
                 _logger.LogInformation("No se encontraron productos en la base de datos.");
                 return Enumerable.Empty<ProductoDTO>();
             }
-            return _mapper.Map<IEnumerable<ProductoDTO>>(productos);
+            var lista = _mapper.Map<IEnumerable<ProductoDTO>>(productos);
+            RewriteImagenUrl(lista);
+            return lista;
         }
 
         public async Task<ProductoDTO> GetProductoByIdAsync(int id)
@@ -87,7 +107,10 @@ namespace BicTechBack.src.Core.Services
                 _logger.LogWarning("Producto no encontrado. Id: {Id}", id);
                 throw new KeyNotFoundException("Producto no encontrado.");
             }
-            return _mapper.Map<ProductoDTO>(producto);
+
+            var dto = _mapper.Map<ProductoDTO>(producto);
+            RewriteImagenUrl(dto);
+            return dto;
         }
 
         public async Task<(IEnumerable<ProductoDTO> Productos, int Total)> GetProductosAsync(int page, int pageSize, string? filtro)
@@ -102,6 +125,7 @@ namespace BicTechBack.src.Core.Services
                 .Take(pageSize);
 
             var productosDTO = _mapper.Map<IEnumerable<ProductoDTO>>(productosPaginados);
+            RewriteImagenUrl(productosDTO);
 
             return (productosDTO, total);
         }
@@ -144,7 +168,9 @@ namespace BicTechBack.src.Core.Services
 
             _logger.LogInformation("Producto actualizado correctamente. Id: {Id}, Nombre: {Nombre}", productoActualizado.Id, productoActualizado.Nombre);
 
-            return _mapper.Map<ProductoDTO>(productoActualizado);
+            var dtoActualizado = _mapper.Map<ProductoDTO>(productoActualizado);
+            RewriteImagenUrl(dtoActualizado);
+            return dtoActualizado;
         }
 
         /// <summary>

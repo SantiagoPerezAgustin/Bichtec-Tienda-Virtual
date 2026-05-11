@@ -41,7 +41,13 @@ namespace BicTechBack.IntegrationTests.Services
             var mapper = GetMapper();
             var msLogger = new LoggerFactory().CreateLogger<ProductoService>();
             var logger = new LoggerAdapter<ProductoService>(msLogger);
-            return new ProductoService(repo, marcaRepo, categoriaRepo, mapper, logger);
+            return new ProductoService(
+                repo,
+                marcaRepo,
+                categoriaRepo,
+                mapper,
+                logger,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter());
         }
 
         private (Categoria, Marca) AddCategoriaYMarca(AppDbContext context)
