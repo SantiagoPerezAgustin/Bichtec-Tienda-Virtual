@@ -48,7 +48,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.CreateProductoAsync(dto);
@@ -88,7 +89,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -125,7 +127,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -163,7 +166,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.CreateProductoAsync(dto));
@@ -183,7 +187,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 null,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.DeleteProductoAsync(productoId);
@@ -206,7 +211,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 null,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.DeleteProductoAsync(productoId);
@@ -240,7 +246,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.GetAllProductosAsync();
@@ -267,7 +274,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.GetAllProductosAsync();
@@ -298,7 +306,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.GetProductoByIdAsync(productoId);
@@ -324,7 +333,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
@@ -365,7 +375,8 @@ namespace BicTechBack.UnitTests.Services
                 null,
                 null,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.GetProductosAsync(page, pageSize, null);
@@ -450,7 +461,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             var result = await service.UpdateProductoAsync(productoExistenteId, producto);
@@ -504,7 +516,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
@@ -563,7 +576,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
@@ -615,7 +629,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
@@ -667,7 +682,8 @@ namespace BicTechBack.UnitTests.Services
                 mockMarcaRepo.Object,
                 mockCategoriaRepo.Object,
                 mockMapper.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                new Application.Services.NoOpProductoImagenWebpUrlRewriter()
             );
             await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
