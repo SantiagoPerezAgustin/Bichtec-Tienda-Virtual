@@ -92,7 +92,11 @@ builder.Services.AddSingleton<Application.Interfaces.IImageWebpEncoder, Infrastr
 builder.Services.AddHttpClient(nameof(BicTechBack.src.API.Controllers.ImagenesController));
 builder.Services.AddHttpClient("ProductoWebpProxy", client =>
 {
-    client.Timeout = TimeSpan.FromSeconds(60);
+    client.Timeout = TimeSpan.FromSeconds(90);
+    client.DefaultRequestHeaders.TryAddWithoutValidation(
+        "User-Agent",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+    client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "image/avif,image/webp,image/apng,image/*,*/*;q=0.8");
 });
 
 builder.Services.Configure<ProductoImagenWebpOptions>(
@@ -118,19 +122,16 @@ builder.Services.AddCors(options =>
 // ==========================================
 
 var postgresConnectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
-
-// Limpiamos espacios en blanco por si acaso
-postgresConnectionString = postgresConnectionString?.Trim();
-
 if (string.IsNullOrWhiteSpace(postgresConnectionString))
 {
-    throw new InvalidOperationException("Falta ConnectionStrings:PostgreSQLConnection...");
+    throw new InvalidOperationException(
+        "Falta ConnectionStrings:PostgreSQLConnection. En Render define ConnectionStrings__PostgreSQLConnection (Host=...;Database=...;Username=...;SSL Mode=Require). Opcional: POSTGRES_PASSWORD con la clave sola para evitar errores al pegar.");
 }
 
+// Si POSTGRES_PASSWORD está definida, reemplaza la contraseña (útil en Render: clave larga o caracteres que rompen el parsing).
 var passwordOverride = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")?.Trim();
 if (!string.IsNullOrEmpty(passwordOverride))
 {
-    // Esto es lo que fallaba si el string original era una URL
     var csb = new NpgsqlConnectionStringBuilder(postgresConnectionString) { Password = passwordOverride };
     postgresConnectionString = csb.ConnectionString;
 }
