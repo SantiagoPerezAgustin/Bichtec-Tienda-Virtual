@@ -59,14 +59,12 @@
 }
 
 .detalle-imagen-wrap {
+  position: relative;
   width: 100%;
   min-width: 0;
   max-width: 420px;
   height: var(--producto-img-detalle-alto, 280px);
   min-height: var(--producto-img-detalle-alto, 280px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: #fff;
   border-radius: 12px;
   border: 2px solid #ffcc00;
@@ -74,15 +72,16 @@
 }
 
 .detalle-imagen {
-  width: auto;
-  height: auto;
-  max-width: calc(100% - 1.5rem);
-  max-height: calc(var(--producto-img-detalle-alto, 280px) - 1.5rem);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem;
+  box-sizing: border-box;
   object-fit: contain;
   object-position: center;
   display: block;
-  margin: 0 auto;
-  padding: 0.75rem;
+  margin: 0;
 }
 
 .detalle-titulo {

@@ -107,36 +107,32 @@
   }
 }
 
-/* Área de imagen — mismo alto; marco superior redondeado con la card */
+/* Área de imagen — alto fijo; la foto en absolute llena el rectángulo (evita “tiras” y colapsos con flex). */
 .card-producto-img-wrap {
+  position: relative;
   width: 100%;
   min-width: 0;
   height: var(--producto-img-catalogo-alto, 220px);
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(180deg, #ffffff 0%, #faf8f2 100%);
   border-bottom: 2px solid rgba(255, 215, 0, 0.45);
   overflow: hidden;
   box-shadow: inset 0 -6px 12px rgba(255, 215, 0, 0.06);
 }
 
-/* Bootstrap .card-img-top fuerza width:100%; con height:100% + flex a veces deja la foto en “tira”.
-   Usamos max-* + auto para que ocupe el recuadro manteniendo proporción. */
 .card-producto-img,
 .card-producto .card-img-top.card-producto-img {
-  width: auto;
-  height: auto;
-  max-width: calc(100% - 1rem);
-  max-height: calc(var(--producto-img-catalogo-alto, 220px) - 1rem);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
   object-fit: contain;
   object-position: center;
   display: block;
-  margin: 0 auto;
-  padding: 0.5rem;
+  margin: 0;
   transition: transform 0.18s ease;
-  flex-shrink: 0;
 }
 
 .card-producto:hover .card-producto-img {
