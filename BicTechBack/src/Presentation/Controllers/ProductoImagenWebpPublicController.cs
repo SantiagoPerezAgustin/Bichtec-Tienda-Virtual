@@ -98,6 +98,18 @@ public class ProductoImagenWebpPublicController : ControllerBase
                 return StatusCode(502);
             }
 
+            var maxSource = opt.MaxSourceBytes;
+            var declaredLen = response.Content.Headers.ContentLength;
+            if (declaredLen.HasValue && declaredLen.Value > maxSource)
+            {
+                _logger.LogWarning(
+                    "Imagen producto {Id}: origen demasiado grande ({Bytes} bytes > MaxSourceBytes {Max})",
+                    id,
+                    declaredLen.Value,
+                    maxSource);
+                return StatusCode(502);
+            }
+
             await using var remote = await response.Content
                 .ReadAsStreamAsync(cancellationToken)
                 .ConfigureAwait(false);

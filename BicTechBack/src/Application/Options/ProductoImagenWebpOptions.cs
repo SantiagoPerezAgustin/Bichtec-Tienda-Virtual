@@ -21,7 +21,7 @@ public sealed class ProductoImagenWebpOptions
     public int WebpQuality { get; set; } = 80;
 
     /// <summary>Tamaño máximo de la imagen origen descargada (bytes).</summary>
-    public int MaxSourceBytes { get; set; } = 5 * 1024 * 1024;
+    public int MaxSourceBytes { get; set; } = 10 * 1024 * 1024;
 
     /// <summary>
     /// Lado mayor máximo en píxeles antes de codificar WebP en el proxy público (reduce memoria y CPU en el servidor).
