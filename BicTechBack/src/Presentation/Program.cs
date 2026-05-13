@@ -89,6 +89,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 builder.Services.AddSingleton<Application.Interfaces.IImageWebpEncoder, Infrastructure.Services.ImageWebpEncoder>();
+builder.Services.AddSingleton<Infrastructure.Services.ProductoWebpTranscodeGate>();
 builder.Services.AddHttpClient(nameof(BicTechBack.src.API.Controllers.ImagenesController));
 builder.Services.AddHttpClient("ProductoWebpProxy", client =>
 {

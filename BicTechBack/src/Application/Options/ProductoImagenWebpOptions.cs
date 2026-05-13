@@ -21,7 +21,17 @@ public sealed class ProductoImagenWebpOptions
     public int WebpQuality { get; set; } = 80;
 
     /// <summary>Tamaño máximo de la imagen origen descargada (bytes).</summary>
-    public int MaxSourceBytes { get; set; } = 20 * 1024 * 1024;
+    public int MaxSourceBytes { get; set; } = 5 * 1024 * 1024;
+
+    /// <summary>
+    /// Lado mayor máximo en píxeles antes de codificar WebP en el proxy público (reduce memoria y CPU en el servidor).
+    /// </summary>
+    public int MaxProxyImageEdgePixels { get; set; } = 1600;
+
+    /// <summary>
+    /// Máximo de transcodificaciones WebP en paralelo (evita picos de RAM cuando muchas imágenes cargan a la vez).
+    /// </summary>
+    public int MaxConcurrentWebpTranscodes { get; set; } = 2;
 
     /// <summary>Entradas en caché de bytes WebP por producto.</summary>
     public int CacheSeconds { get; set; } = 3600;
