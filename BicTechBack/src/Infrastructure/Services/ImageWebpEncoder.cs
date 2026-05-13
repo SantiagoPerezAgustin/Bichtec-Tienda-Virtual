@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
+using SixLabors.ImageSharp.Processing;
 
 namespace Infrastructure.Services;
 
@@ -11,10 +12,12 @@ public sealed class ImageWebpEncoder : IImageWebpEncoder
     public async Task<byte[]> EncodeToWebpAsync(
         Stream imageStream,
         int quality = DefaultQuality,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        int maxEdgePixels = 0)
     {
         ArgumentNullException.ThrowIfNull(imageStream);
         quality = Math.Clamp(quality, 1, 100);
+        maxEdgePixels = Math.Clamp(maxEdgePixels, 0, 8192);
 
         Stream input = imageStream;
         if (!input.CanSeek)
@@ -30,6 +33,15 @@ public sealed class ImageWebpEncoder : IImageWebpEncoder
         }
 
         using var image = await Image.LoadAsync(input, cancellationToken).ConfigureAwait(false);
+
+        if (maxEdgePixels > 0 && (image.Width > maxEdgePixels || image.Height > maxEdgePixels))
+        {
+            image.Mutate(ctx => ctx.Resize(new ResizeOptions
+            {
+                Size = new Size(maxEdgePixels, maxEdgePixels),
+                Mode = ResizeMode.Max,
+            }));
+        }
 
         await using var output = new MemoryStream();
         await image.SaveAsWebpAsync(output, new WebpEncoder { Quality = quality }, cancellationToken)
