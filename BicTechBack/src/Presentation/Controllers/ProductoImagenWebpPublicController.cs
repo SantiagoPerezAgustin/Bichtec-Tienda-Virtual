@@ -46,8 +46,8 @@ public class ProductoImagenWebpPublicController : ControllerBase
     }
 
     /// <summary>Obtiene la imagen del producto en formato WebP (origen JPG/PNG/etc. desde la URL almacenada).</summary>
+    /// <remarks>Si el proxy no puede servir WebP, responde 302 al origen HTTPS para que el &lt;img&gt; siga mostrando la foto.</remarks>
     [HttpGet("producto/{id:int}/webp")]
-    [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 3600)]
     [Produces("image/webp")]
     public async Task<IActionResult> GetProductoWebp(int id, CancellationToken cancellationToken)
     {
@@ -55,7 +55,11 @@ public class ProductoImagenWebpPublicController : ControllerBase
         var cacheKey = $"webp:producto:{id}";
         if (_cache.TryGetValue(cacheKey, out byte[]? cached) && cached is { Length: > 0 })
         {
-            Response.Headers.CacheControl = $"public,max-age={opt.CacheSeconds}";
+            Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+            {
+                Public = true,
+                MaxAge = TimeSpan.FromSeconds(opt.CacheSeconds),
+            };
             return File(cached, "image/webp");
         }
 
@@ -64,7 +68,11 @@ public class ProductoImagenWebpPublicController : ControllerBase
         {
             if (_cache.TryGetValue(cacheKey, out cached) && cached is { Length: > 0 })
             {
-                Response.Headers.CacheControl = $"public,max-age={opt.CacheSeconds}";
+                Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+                {
+                    Public = true,
+                    MaxAge = TimeSpan.FromSeconds(opt.CacheSeconds),
+                };
                 return File(cached, "image/webp");
             }
 
@@ -95,7 +103,7 @@ public class ProductoImagenWebpPublicController : ControllerBase
                     "Fallo al descargar imagen del producto {Id}. Status {Status}",
                     id,
                     (int)response.StatusCode);
-                return StatusCode(502);
+                return RedirectToSourceOr502(sourceUri, id, "fallo descarga");
             }
 
             var maxSource = opt.MaxSourceBytes;
@@ -107,7 +115,7 @@ public class ProductoImagenWebpPublicController : ControllerBase
                     id,
                     declaredLen.Value,
                     maxSource);
-                return StatusCode(502);
+                return RedirectToSourceOr502(sourceUri, id, "origen demasiado grande para el proxy");
             }
 
             await using var remote = await response.Content
@@ -127,7 +135,7 @@ public class ProductoImagenWebpPublicController : ControllerBase
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "No se pudo transcodificar imagen del producto {Id}", id);
-                return StatusCode(502);
+                return RedirectToSourceOr502(sourceUri, id, "fallo transcodificación");
             }
 
             _cache.Set(
@@ -138,13 +146,61 @@ public class ProductoImagenWebpPublicController : ControllerBase
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Math.Max(60, opt.CacheSeconds)),
                 });
 
-            Response.Headers.CacheControl = $"public,max-age={opt.CacheSeconds}";
+            Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+            {
+                Public = true,
+                MaxAge = TimeSpan.FromSeconds(opt.CacheSeconds),
+            };
             return File(webp, "image/webp");
         }
         finally
         {
             _transcodeGate.Semaphore.Release();
         }
+    }
+
+    /// <summary>Evita fotos rotas en el catálogo: el navegador sigue la redirección y carga el archivo desde el CDN original.</summary>
+    private IActionResult RedirectToSourceOr502(Uri sourceUri, int productoId, string motivo)
+    {
+        if (!TryBuildPublicImageRedirect(sourceUri, out var target))
+        {
+            _logger.LogWarning(
+                "Producto {Id}: {Motivo}; no se puede redirigir (URL no http/https usable)",
+                productoId,
+                motivo);
+            return StatusCode(502);
+        }
+
+        _logger.LogInformation(
+            "Producto {Id}: {Motivo}; redirigiendo al origen {Url}",
+            productoId,
+            motivo,
+            target.AbsoluteUri);
+        Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+        {
+            NoStore = true,
+            NoCache = true,
+        };
+        return Redirect(target.AbsoluteUri);
+    }
+
+    /// <summary>HTTPS tal cual; HTTP se promueve a HTTPS (ImgBB y similares suelen responder bien).</summary>
+    private static bool TryBuildPublicImageRedirect(Uri source, out Uri target)
+    {
+        if (source.Scheme == Uri.UriSchemeHttps)
+        {
+            target = source;
+            return true;
+        }
+
+        if (source.Scheme == Uri.UriSchemeHttp)
+        {
+            target = new UriBuilder(source) { Scheme = Uri.UriSchemeHttps, Port = -1 }.Uri;
+            return true;
+        }
+
+        target = default!;
+        return false;
     }
 
     private static async Task<MemoryStream> CopyStreamWithLimitAsync(
