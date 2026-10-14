@@ -1,21 +1,21 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar solución y proyectos incluyendo la carpeta contenedora
-COPY ["BicTechBack/BicTechBack.sln", "./"]
-COPY ["BicTechBack/src/Presentation/Presentation.csproj", "BicTechBack/src/Presentation/"]
-COPY ["BicTechBack/src/Application/Application.csproj", "BicTechBack/src/Application/"]
-COPY ["BicTechBack/src/Domain/Domain.csproj", "BicTechBack/src/Domain/"]
-COPY ["BicTechBack/src/Infrastructure/Infrastructure.csproj", "BicTechBack/src/Infrastructure/"]
+# Copiar solución y proyectos directamente
+COPY ["BicTechBack.sln", "./"]
+COPY ["src/Presentation/Presentation.csproj", "src/Presentation/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Domain/Domain.csproj", "src/Domain/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
 
 # Restaurar dependencias
-RUN dotnet restore "BicTechBack/src/Presentation/Presentation.csproj"
+RUN dotnet restore "src/Presentation/Presentation.csproj"
 
-# Copiar todo el código
-COPY BicTechBack/ ./BicTechBack/
+# Copiar todo el código restante
+COPY . .
 
 # Publicar
-WORKDIR "/src/BicTechBack/src/Presentation"
+WORKDIR "/src/src/Presentation"
 RUN dotnet publish "Presentation.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Etapa final de ejecucion
