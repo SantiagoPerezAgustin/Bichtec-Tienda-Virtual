@@ -1,33 +1,31 @@
-# =========================
-# Etapa 1: Build
-# =========================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar todos los proyectos de producción
-COPY src/Application/*.csproj ./src/Application/
-COPY src/Infrastructure/*.csproj ./src/Infrastructure/
-COPY src/Domain/*.csproj ./src/Domain/
-COPY src/Presentation/*.csproj ./src/Presentation/
-COPY BicTechBack.sln ./
+# Copiar solución y proyectos incluyendo la carpeta contenedora
+COPY ["BicTechBack/BicTechBack.sln", "./"]
+COPY ["BicTechBack/src/Presentation/Presentation.csproj", "BicTechBack/src/Presentation/"]
+COPY ["BicTechBack/src/Application/Application.csproj", "BicTechBack/src/Application/"]
+COPY ["BicTechBack/src/Domain/Domain.csproj", "BicTechBack/src/Domain/"]
+COPY ["BicTechBack/src/Infrastructure/Infrastructure.csproj", "BicTechBack/src/Infrastructure/"]
 
-# Restaurar dependencias solo de Presentation (evita errores de tests)
-RUN dotnet restore src/Presentation/Presentation.csproj
+# Restaurar dependencias
+RUN dotnet restore "BicTechBack/src/Presentation/Presentation.csproj"
 
 # Copiar todo el código
-COPY . .
+COPY BicTechBack/ ./BicTechBack/
 
-# Publicar solo Presentation
-RUN dotnet publish src/Presentation/Presentation.csproj -c Release -o /app
+# Publicar
+WORKDIR "/src/BicTechBack/src/Presentation"
+RUN dotnet publish "Presentation.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# =========================
-# Etapa 2: Runtime
-# =========================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+# Etapa final de ejecucion
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-COPY --from=build /app .
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+COPY --from=build /app/publish .
 
 ENTRYPOINT ["dotnet", "Presentation.dll"]
-
-
