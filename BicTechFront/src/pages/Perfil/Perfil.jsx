@@ -3,7 +3,9 @@ import ActualizarPassword from "../../components/ActualizarPassword/ActualizarPa
 import EliminarUsuario from "../../components/EliminarUsuario/EliminarUsuario";
 import { AuthContext } from "../../context/AuthContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 
 const Perfil = () => {
   const { usuario } = useContext(AuthContext);

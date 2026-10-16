@@ -3,7 +3,9 @@ import Button from "react-bootstrap/Button";
 import ValidationsForms from "../Validations/ValidationsForms";
 import { toast } from "react-toastify";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 const COLORES_FUNDA = [
   "Negro",
   "Blanco",

@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 
 export const CarritoContext = createContext();
 

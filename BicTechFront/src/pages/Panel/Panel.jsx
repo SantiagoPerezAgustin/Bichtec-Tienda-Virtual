@@ -12,7 +12,9 @@ import CardUsuario from "../../components/CardUsuario/CardUsuario";
 import CardPedido from "../../components/CardPedido/CardPedido";
 import { toast } from "react-toastify";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 
 const ESTADOS_ENUM = [
   { label: "Pendiente", value: 0 },

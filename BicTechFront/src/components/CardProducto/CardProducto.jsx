@@ -8,7 +8,9 @@ import { CarritoContext } from "../../context/CarritoContext";
 import "./CardProducto.css";
 import { formatPrecioARS } from "../../utils/precio";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 
 function CardProducto({
   producto,

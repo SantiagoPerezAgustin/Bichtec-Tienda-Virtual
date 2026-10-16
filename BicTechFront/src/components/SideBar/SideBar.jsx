@@ -3,7 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { FiltroContext } from "../../context/FiltroContext";
 import { FILTRO_SIN_SELECCION } from "../../constants/filtrosCatalogo";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 
 const SIDEBAR_WIDTH = 250;
 
