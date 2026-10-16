@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ValidationsForms from "../Validations/ValidationsForms";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 const COLORES_FUNDA = [
   "Negro",
   "Blanco",

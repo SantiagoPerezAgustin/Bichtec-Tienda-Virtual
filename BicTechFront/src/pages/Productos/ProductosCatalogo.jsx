@@ -12,7 +12,9 @@ import {
   FILTRO_NOMBRE_AURICULAR,
 } from "../../constants/filtrosCatalogo";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 const IMG_CATEGORIA_FALLBACK =
   "https://images.unsplash.com/photo-1468495241042-464ab9f5df4e?auto=format&fit=crop&w=900&q=80";
 

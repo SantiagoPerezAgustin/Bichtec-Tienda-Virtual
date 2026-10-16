@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Register from "../../components/Register/Register";
 import { toast } from "react-toastify";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5087";
+const API_URL = import.meta.env.VITE_API_URL || "https://bichtec-bichtec-backend.iotxoi.easypanel.host";
 
 const FormPageRegister = () => {
   const nombreRef = useRef(null);
