@@ -24,7 +24,7 @@ namespace BicTechBack.src.Infrastructure.Data
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.Property(e => e.Password).HasColumnName("password_hash"); // Cambialo por el nombre real de tu columna en Postgres
+                entity.Property(e => e.Password).HasColumnName("password");
             });
 
             modelBuilder.Entity<Producto>()
