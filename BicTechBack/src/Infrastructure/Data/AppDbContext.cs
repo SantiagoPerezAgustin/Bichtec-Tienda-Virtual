@@ -24,7 +24,8 @@ namespace BicTechBack.src.Infrastructure.Data
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.Property(e => e.Password).HasColumnName("password_hash");
+                // Cambiado de "password_hash" a "password"
+                entity.Property(e => e.Password).HasColumnName("password");
             });
 
             modelBuilder.Entity<Producto>()
