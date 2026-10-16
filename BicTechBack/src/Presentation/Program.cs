@@ -182,7 +182,6 @@ builder.Services.AddAuthentication(options =>
 // ==========================================
 builder.Services.Configure<StripeOptions>(opts =>
 {
-    // Si la variable existe pero está vacía en Render, no pisar appsettings (?? solo cubre null).
     var stripeBase = Environment.GetEnvironmentVariable("STRIPE_BASEURL");
     opts.BaseUrl = string.IsNullOrWhiteSpace(stripeBase)
         ? builder.Configuration["Stripe:BaseUrl"]
@@ -259,6 +258,24 @@ static void WarnIfSupabaseTransactionPooler(int? port)
 
 var app = builder.Build();
 
+// ==========================================
+// 🚀 APLICAR MIGRACIONES AUTOMÁTICAMENTE AL INICIAR
+// ==========================================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error al aplicar las migraciones a la base de datos.");
+    }
+}
+
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -272,9 +289,6 @@ app.UseCors("AllowAll");
 
 // Middleware de excepciones personalizado
 app.UseMiddleware<BicTechBack.src.API.Extensions.ExceptionMiddleware>();
-
-// Sin UseHttpsRedirection: en Docker/Render el TLS lo termina el proxy; el contenedor solo escucha HTTP
-// y evita "Failed to determine the https port for redirect".
 
 app.UseAuthentication();
 app.UseAuthorization();
