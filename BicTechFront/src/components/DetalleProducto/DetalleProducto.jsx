@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { CarritoContext } from "../../context/CarritoContext";
 import { formatPrecioARS } from "../../utils/precio";
+import { cloudinaryUrl } from "../../utils/cloudinary";
 
 const DetalleProducto = ({
   producto,
@@ -39,7 +40,7 @@ const DetalleProducto = ({
         <div className="detalle-body">
           <div className="detalle-imagen-wrap">
             <img
-              src={producto.imagenUrl}
+              src={cloudinaryUrl(producto.imagenUrl, { width: 900 })}
               alt={producto.nombre}
               className="detalle-imagen"
             />
@@ -49,7 +50,9 @@ const DetalleProducto = ({
             <strong>Descripción:</strong> {producto.descripcion}
           </p>
           <div className="precio-comprar-container">
-            <h2 className="precio">Precio: {formatPrecioARS(producto.precio)}</h2>
+            <h2 className="precio">
+              Precio: {formatPrecioARS(producto.precio)}
+            </h2>
             {producto.stock <= 0 ? (
               <div
                 style={{
