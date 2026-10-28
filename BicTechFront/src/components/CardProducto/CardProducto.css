@@ -55,7 +55,6 @@
   text-shadow: 1px 1px 0 #ffd700;
   line-height: 1.25;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -107,12 +106,12 @@
   }
 }
 
-/* Área de imagen — alto fijo; la foto en absolute llena el rectángulo (evita “tiras” y colapsos con flex). */
+/* Área de imagen — proporción fija 4:3; la foto en absolute llena el rectángulo. */
 .card-producto-img-wrap {
   position: relative;
   width: 100%;
   min-width: 0;
-  height: var(--producto-img-catalogo-alto, 220px);
+  aspect-ratio: 4 / 3;
   flex-shrink: 0;
   background: linear-gradient(180deg, #ffffff 0%, #faf8f2 100%);
   border-bottom: 2px solid rgba(255, 215, 0, 0.45);
@@ -126,9 +125,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
   margin: 0;

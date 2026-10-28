@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { CarritoContext } from "../../context/CarritoContext";
 import "./CardProducto.css";
 import { formatPrecioARS } from "../../utils/precio";
+import { cloudinaryUrl } from "../../utils/cloudinary";
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
@@ -45,7 +46,7 @@ function CardProducto({
     }
     if (
       /(iphone|samsung|redmi|poco|motorola|galaxy|xiaomi|pixel|phone|celular)/i.test(
-        texto
+        texto,
       )
     ) {
       return "Celular";
@@ -63,7 +64,7 @@ function CardProducto({
       .map((color) => color.trim())
       .filter(Boolean);
     return [...new Set(list.map((c) => c.toLowerCase()))].map(
-      (lower) => list.find((c) => c.toLowerCase() === lower) || lower
+      (lower) => list.find((c) => c.toLowerCase() === lower) || lower,
     );
   }, [producto?.color]);
 
@@ -94,7 +95,7 @@ function CardProducto({
         toast.success(
           colorSeleccionado
             ? `Producto agregado al carrito (Color: ${colorSeleccionado})`
-            : "Producto agregado al carrito!"
+            : "Producto agregado al carrito!",
         );
       } catch (error) {
         // Mostrar mensaje específico si es error de stock
@@ -135,7 +136,7 @@ function CardProducto({
                       "Content-Type": "application/json",
                       Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
-                  }
+                  },
                 );
                 if (response.ok) {
                   toast.success("Producto eliminado correctamente");
@@ -165,7 +166,7 @@ function CardProducto({
           </button>
         </div>
       </div>,
-      { autoClose: false }
+      { autoClose: false },
     );
   };
 
@@ -174,8 +175,9 @@ function CardProducto({
       <div className="card-producto-img-wrap">
         <Card.Img
           variant="top"
-          src={producto.imagenUrl}
-          alt=""
+          src={cloudinaryUrl(producto.imagenUrl, { width: 600 })}
+          alt={producto.nombre || ""}
+          loading="lazy"
           className="card-producto-img"
         />
       </div>
@@ -203,7 +205,9 @@ function CardProducto({
                     className="card-producto-color-dot"
                     style={{
                       background:
-                        PALETA_COLORES[(colorSeleccionado || "").toLowerCase()] || "#9ca3af",
+                        PALETA_COLORES[
+                          (colorSeleccionado || "").toLowerCase()
+                        ] || "#9ca3af",
                     }}
                   />
                   <select
@@ -219,7 +223,9 @@ function CardProducto({
                   </select>
                 </div>
               ) : (
-                <div className="card-producto-colores-vacio">Sin colores cargados</div>
+                <div className="card-producto-colores-vacio">
+                  Sin colores cargados
+                </div>
               )}
             </div>
           )}
